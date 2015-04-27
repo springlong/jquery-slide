@@ -59,33 +59,34 @@
 
 `Slider` 默认的配置选项与实例化时传递进来的配置参数进行合并后的结果。
 
-关于 `Slider` 默认的配置选项，大家可以参见：[#202]()。
+关于 `Slider` 默认的配置选项，大家可以参见：[#1](/issues/1)。
 
 为了减少轮播图效果的内存占用，并不是所有的默认选项都会被合并到 `oSlide.cfg` 中。每次的合并操作都是将 `Slider.config` 对象与配置参数进行合并，而该对象的值如下所示（那些用于内部操作，或者默认值为 0 或 false 的参数将被注释）：
 
-	Slider.config = {
-	    trigger: "mouseenter",
-	    tagClass: "current",
-	    btnClass: "disabled",
-	    duration: 400,
-	    interval: 5000,
-	    cur: 0,
-	    scrollLen: 0,
-	    // hoverDelay: 0,
-	    // keepTags: false,
-	    // btnDisable: false,
-	    // auto: false,
-	    // lazyload: false,
-	    // beLock: false,
-	    // imgAttr: 'data-slide-img',
-	    // lists: '.j_slideLists',
-	    // tags: '.j_slideTags',
-	    // posCur: '.j_slideCur',
-	    // posPages: '.j_slidePages',
-	    // btnPrev: '.j_slidePrev',
-	    // btnNext: '.j_slideNext'
-	};
-
+```js
+Slider.config = {
+    trigger: "mouseenter",
+    tagClass: "current",
+    btnClass: "disabled",
+    duration: 400,
+    interval: 5000,
+    cur: 0,
+    scrollLen: 0,
+    // hoverDelay: 0,
+    // keepTags: false,
+    // btnDisable: false,
+    // auto: false,
+    // lazyload: false,
+    // beLock: false,
+    // imgAttr: 'data-slide-img',
+    // lists: '.j_slideLists',
+    // tags: '.j_slideTags',
+    // posCur: '.j_slideCur',
+    // posPages: '.j_slidePages',
+    // btnPrev: '.j_slidePrev',
+    // btnNext: '.j_slideNext'
+};
+```
 
 ### 8. `oSlide.callback`
 
@@ -146,9 +147,11 @@
 
 执行对 `oSlide` 对象的初始化操作——即完成对当前图片轮播的函数绑定，该函数将全权负责图片轮播时的行为表现的代码处理。
 
-	oSlide.init(function(cur, old, action){
-		console.log('该回调函数用于负责图片轮播时的行为表现');
-	});
+```js
+oSlide.init(function(cur, old, action){
+	console.log('该回调函数用于负责图片轮播时的行为表现');
+});
+```
 
 相关参数如下：
 

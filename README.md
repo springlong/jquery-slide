@@ -45,18 +45,22 @@
 
 在这个阶段，我们需要传递相关参数来完成 Slider 对象的实例化操作。例如：
 
+```js
 	var oSlide = new Slider('#slideTest', { trigger: 'click', keepTags: true }, function(cur, old, action){
 		console.log('图片轮播时将会触发的回调函数，用于完成相关的附加操作和行为扩展');
 	});
+```
 
 函数调用的参数描述如下：
 
+```js
 	new Slider(selector[, config][, callback]);
+```
 
 参数说明：
 
 1. `selector`：图片轮播所在容器的选择器字符串（将会通过该选择器所构成的jQuery对象向下查找其他相关元素）；
-2. `config`：配置选项（详情请参见：[#202]()）；
+2. `config`：配置选项（详情请参见：[#1](/issues/1)）；
 3. `callback`：每次执行切换处理之前被触发的回调函数，该函数的参数传递与 `oSlide.init` 的绑定函数相一致。
 
 `config` 和 `callback` 参数均为可选，这意味着你可以保持默认的配置选项，将回调函数作为第二个参数进行使用。
@@ -70,9 +74,11 @@
 
 在实例化阶段我们获取到了一些有价值的基础信息，而接下来我们需要执行 `oSlide` 对象的初始化方法来完成对当前图片轮播的函数绑定：
 
+```js
 	oSlide.init(function(cur, old, action){
 		console.log('该回调函数用于负责图片轮播时的行为表现');
 	});
+```
 
 上面语句中的回调函数，将全权负责图片轮播时的行为表现。相关参数如下：
 
@@ -93,14 +99,16 @@
 5. 将分页标签、分页按钮、分页显示等后期需要继续使用的元素的jQuery对象附加到 `oSlide` 对象中。
 6. 无效切换时将移除不必要中的附加元素（分页按钮、分页标签等）
 
-当完成初始化操作后，`oSlide` 对象的成员列表将发生变更，详情请参见：[#203]()。
+当完成初始化操作后，`oSlide` 对象的成员列表将发生变更，详情请参见：[#2](/issues/2)。
 
 
 ### 3、完成标识
 
 由于 `oSlide` 对象是通过函数绑定的形式（第三方回调）来完成对图片轮播的行为处理，因此 `oSlide` 并不能知道每次的切换动作会在什么时候完成。所以我们提供了下面的函数接口来标识切换动作的完成：
 
+```js
 	oSlide.done();  // 标识本轮切换动作已经完成
+```
 
 该函数调用通常放在初始化绑定的函数中，当完成 animate 动画后进行回调。不过需要注意的是，必须通过 `oSlide` 对象的方法调用的形式来执行，否则在 `done` 函数中 `this` 将无法指向 `oSlide` 对象。
 
@@ -118,14 +126,17 @@
 
 `.slide()` 扩展函数其实就是给 `new Slider()` 操作套了一个外壳，而在这个壳的里面完成了负责行为表现的处理函数的绑定工作。因此该扩展函数的调用格式，与 `new Slider()` 的基本一致，只是将选择器字符串前置了而已：
 
+```js
 	$('#slideTest').slide({ trigger: 'click', keepTags: true }, function(cur, old, action){
 		// 切换动作开始前的回调函数
 	});
+```
 
 需要注意的是，执行 `.slide()` 函数调用后，返回的结果是 jQuery 对象实例的引用，而非 `Slider` 对象的实例。
 
 与 `Slider` 对象实例化不同的是，在执行 `.slide()` 函数调用时，除了可以设置 `Slider` 对象的配置选项外，还增加了下面几个自定义的配置选项（默认值）：
 
+```js
 	{
 		easing： 'swing',	// 进行动画效果时的缓动算法
 		effect: 'none', 	// 切换方式，"none"-无效果，"fade"-淡入淡出，"fadeIn"-仅淡入效果，scrollx"-垂直滚动，"scrolly"-水平滚动；
@@ -133,7 +144,7 @@
 		allowBlank: false, 	// 非无缝结构下，是否允许最后一组的留白
 		doResize: false,   	// 是否在窗口大小变更的情况下调整内容项的宽度（仅使用于scrollx效果，当轮播图宽度与文档视图宽度一致时默认开启）
 	}
-
+```
 
 **缓动算法（easing）**
 
@@ -173,6 +184,7 @@ jQuery 默认只提供了 `linear` 和 `swing` 两种缓动算法，为了获得
 
 下面我们来看下基本的代码结构：
 
+```html
 	<div id="slideDemo">
 		<!-- 轮播图列表 -->
 	    <div class="content">
@@ -202,7 +214,7 @@ jQuery 默认只提供了 `linear` 和 `swing` 两种缓动算法，为了获得
 	        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
 	    </div>
 	</div>
-
+```
 
 ### 外围容器
 
