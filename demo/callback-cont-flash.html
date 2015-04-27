@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：回调函数-内容项的动画效果</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+        #slideCallback{position:relative;overflow:hidden;width:100%;height:650px;font-family:"Microsoft YaHei";background-color:#000;}
+        #slideCallback .content{position:relative;overflow:hidden;width:100%;height:100%;margin:0 auto;}
+        #slideCallback .contentInner{height:100%;}
+        #slideCallback .content .item{width:100%;}
+        #slideCallback .content .itemInner{width:960px;height:650px;margin:0 auto;}
+        #slideCallback .content .itemInner .pic{position:relative;float:right;width:506px;height:440px;margin-top:50px;}
+        #slideCallback .content .itemInner .cont{position:relative;float:left;width:454px;margin-top:200px;}
+        #slideCallback .content .itemInner .cont h2{font-size:36px;line-height:60px;font-weight:bold;white-space:nowrap;color:#fff;}
+        #slideCallback .content .itemInner .cont p{margin-top:32px;font-size:12px;line-height:1.5em;color:#fff;}
+        #slideCallback .content .itemInner .cont a{display:block;width:100px;height:25px;margin-top:20px;line-height:25px;text-align:center;margin-top:10px;background:#fff;color:#666;text-decoration:none;text-shadow: none;}
+        #slideCallback .tag{position:absolute;left:50%;bottom:40px;width:960px;height:122px;margin-left:-480px;font-size:0;letter-spacing:-8px;}
+        #slideCallback .tag .boxBg{position:absolute;top:-14px;left:20px;width:115px;height:156px;border-radius:5px;background:#0084cf;}
+        #slideCallback .tag ul{position:absolute;left:0;top:0;width:920px;padding:0 20px;background:url(images/animation-2/nav_bg_24.png) no-repeat;}
+        #slideCallback .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:115px;height:122px;font-size:0;line-height:0;cursor:pointer;}
+        #slideCallback .tag .appendBg{position:absolute;top:-14px;left:20px;z-index:2;width:115px;height:156px;background:url(images/animation-2/nav_append.png) center 14px no-repeat;/*background:#333;*/}
+        #slideCallback .btn{display:none;}
+    </style>
+    </style>
+    <!--[if IE 6]>
+
+    <script src="../public/js/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>
+        DD_belatedPNG.fix("#slideCallback .pic, #slideCallback .appendBg, #slideCallback .tag ul");  //修复幻灯片中使用到的png-24图片
+    </script>
+
+    <![endif]-->
+</head>
+<body>
+<h1>slide切换：回调函数-内容项的动画效果</h1>
+<div id="slideCallback">
+    <div class="content">
+        <div class="contentInner j_slideLists">
+            <div class="item" style="background:#000 url(images/animation-2/banner_bg1.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_1.png" />
+                    <div class="cont">
+                        <h2>互联网品牌传播解决方案</h2>
+                        <p>
+                            成都顶级品牌网站建设公司-锐狐网络！<br />
+                            基于互联网的品牌行销策略的策划与执行。<br />
+                            品牌形象挖掘、梳理、包装、表现与传播。<br />
+                            辅助企业实现品牌战略目标的互联网解决方案。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#090909 url(images/animation-2/banner_bg2.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_2.png" />
+                    <div class="cont">
+                        <h2>Web应用(B/S)定制开发</h2>
+                        <p>
+                            自主研发、完善的开发框架。<br />
+                            详细的需求调研及解决方案。<br />
+                            实施项目经验丰富的项目团队。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#160100 url(images/animation-2/banner_bg3.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_3.png" />
+                    <div class="cont">
+                        <h2>互联网时代的整合营销</h2>
+                        <p>
+                            基于互联网的品牌营销策略的定制与执行。<br />
+                            品牌形象挖掘、梳理、包装、表现与传播。<br />
+                            坐拥着最为丰富的行业经验与优势资源。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#061324 url(images/animation-2/banner_bg4.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_4.png" />
+                    <div class="cont">
+                        <h2>您的网站全职管家</h2>
+                        <p>
+                            成熟的监控与报警机制。<br />
+                            丰富的整合营销的能力和经验。<br />
+                            专业数据分析、开发和维护部门。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#0E3C17 url(images/animation-2/banner_bg5.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_5.png" />
+                    <div class="cont">
+                        <h2>不可忽略的移动终端</h2>
+                        <p>
+                            IOS系统、Android系统应用开发。<br />
+                            App Store、Google Play 发布。<br />
+                            APP推广服务。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#0C3C2E url(images/animation-2/banner_bg6.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_6.png" />
+                    <div class="cont">
+                        <h2>全新的学术会议体验</h2>
+                        <p>
+                            工作更高效，主办方更轻松。<br />
+                            线上报名，让主办方不再为报名的事而费尽脑筋。<br />
+                            线上投稿、审稿，为主办方提高收寄、审稿效率。<br />
+                            酒店预订，会议行程更加轻松。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#113122 url(images/animation-2/banner_bg7.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_7.png" />
+                    <div class="cont">
+                        <h2>医院网站管理系统(HMS)</h2>
+                        <p>
+                            与大型医院密切合作。<br />
+                            诊疗挂号很轻松，检验结果实时查询，在线医患服务。<br />
+                            便捷的数据处理能力，稳定的软件基础架构。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item" style="background:#37220F url(images/animation-2/banner_bg8.jpg) no-repeat center top;">
+                <div class="itemInner">
+                    <img class="pic" src="images/animation-2/show_pic_8.png" />
+                    <div class="cont">
+                        <h2>智慧点亮网络(RUIFOX)</h2>
+                        <p>
+                            互联网改变世界，我们改变互联网。<br />
+                            精彩前沿技术演练场。<br />
+                            锐狐新产品尝鲜体验。
+                        </p>
+                        <a href="#" target="_blank">了解详细&gt;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tag">
+        <div class="boxBg"></div>
+        <ul class="j_slideTags">
+            <li class="current">品牌网站建设</li>
+            <li>应用系统开发</li>
+            <li>网络整合营销</li>
+            <li>网络运维托管</li>
+            <li>手机APP开发</li>
+            <li>学术会议系统</li>
+            <li>医院网站系统</li>
+            <li>实验室</li>
+        </ul>
+        <div class="appendBg"></div>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum autoHeight">
+var $ele = $("#slideCallback");
+var $appendBg = $ele.find(".boxBg, .appendBg");
+var tagWidth = $ele.find(".j_slideTags li").width();
+var time = 800;
+
+$ele.slide({ effect:"fade", trigger: "click", duration: time, auto: true, keepTags: true, easing: "easeOutQuad" }, function(cur, old){
+
+    if(cur === old) return; //首次切换不执行
+
+    //移动标签容器中的附加背景
+    $appendBg.animate({left: tagWidth * cur + 20});
+
+    //获取相关元素
+    var $oldContent = this.lists.eq(old),
+        $oldPic = $oldContent.find("img.pic"),
+        $oldCont = $oldContent.find("div.cont"),
+        $curContent = this.lists.eq(cur),
+        $curPic = $curContent.find("img.pic"),
+        $curCont = $curContent.find("div.cont");
+
+    //预备动画
+    $oldPic.stop(true, true).animate({left: -100, opacity: 0}, time);
+    $oldCont.stop(true, true).animate({top: 100, opacity: 0}, time);
+
+    $curPic.stop(true, true).css({left: 100, opacity: 0}).delay(200).animate({left: 0, opacity: 1}, time);
+    $curCont.stop(true, true).css({top: -200, opacity: 0}).delay(200).animate({top: 0, opacity: 1}, time);  
+    $curCont.children().eq(1).stop(true, true).css({paddingTop: 50, paddingBottom: 50}).delay(200).animate({paddingTop: 0, paddingBottom: 0}, time);  //形成文字部分的落差感
+});
+</pre>
+<script>
+    jQuery(function($)
+    {
+        var $ele = $("#slideCallback");
+        var $appendBg = $ele.find(".boxBg, .appendBg");
+        var tagWidth = $ele.find(".j_slideTags li").width();
+        var time = 800;
+
+        $ele.slide({ effect:"fade", trigger: "click", duration: time, auto: true, keepTags: true, easing: "easeOutQuad" }, function(cur, old){
+
+            if(cur === old) return; //首次切换不执行
+
+            //移动标签容器中的附加背景
+            $appendBg.animate({left: tagWidth * cur + 20});
+
+            //获取相关元素
+            var $oldContent = this.lists.eq(old),
+                $oldPic = $oldContent.find("img.pic"),
+                $oldCont = $oldContent.find("div.cont"),
+                $curContent = this.lists.eq(cur),
+                $curPic = $curContent.find("img.pic"),
+                $curCont = $curContent.find("div.cont");
+
+            //预备动画
+            $oldPic.stop(true, true).animate({left: -100, opacity: 0}, time);
+            $oldCont.stop(true, true).animate({top: 100, opacity: 0}, time);
+
+            $curPic.stop(true, true).css({left: 100, opacity: 0}).delay(200).animate({left: 0, opacity: 1}, time);
+            $curCont.stop(true, true).css({top: -200, opacity: 0}).delay(200).animate({top: 0, opacity: 1}, time);  
+            $curCont.children().eq(1).stop(true, true).css({paddingTop: 50, paddingBottom: 50}).delay(200).animate({paddingTop: 0, paddingBottom: 0}, time);  //形成文字部分的落差感
+        });
+
+        // //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

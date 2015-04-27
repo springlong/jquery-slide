@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片滚动</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 50px 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        p{font-size:14px;}
+        hr{margin:50px 0;}
+
+
+        #marquee1{position:relative;width:950px;padding:10px;margin:50px 0 20px;border:1px solid #e9e9e9;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+        #marquee1 .content{position:relative;overflow:hidden;width:100%;height:350px;}
+        #marquee1 .content ul{zoom:1;margin-left:-10px;}
+        #marquee1 .content li{float:left;display:inline;overflow:hidden;width:230px;height:350px;padding-left:10px;}
+        #marquee1 .content li a{display:block;width:100%;height:100%;text-decoration:none;}
+        #marquee1 .content li a img{display:block;height:100px;width:100%;height:100%;vertical-align:baseline;}
+        #marquee1 .content li a span{position:relative;top:0;display:block;width:100%;height:30px;font:14px/30px "Microsoft YaHei";text-align:center;color:#fff;filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#80000000,endColorstr=#80000000);-webkit-transition:all .2s linear;transition:all .2s linear;}
+        :root #marquee1 .content li a span{filter:none;background:rgba(0,0,0,0.5);}
+        #marquee1 .content li a:hover{position:static;}/*兼容IE6*/
+        #marquee1 .content li a:hover span{top:-30px;}
+        #marquee1 .btn a{position:absolute;top:50%;width:46px;height:81px;margin-top:-40px;background:url(images/slide_arrow5.png) no-repeat 0 0;cursor:pointer;outline:none;}
+        #marquee1 .btn .btnPrev{left:0;}
+        #marquee1 .btn .btnNext{right:0;background-position:right top;}
+
+
+        #marquee2{position:relative;width:950px;padding:10px 30px;margin:50px 0 20px;border:1px solid #e9e9e9;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+        #marquee2 .content{overflow:hidden;width:100%;height:350px;}
+        #marquee2 .content ul{zoom:1;margin-left:-10px;}
+        #marquee2 .content li{float:left;display:inline;width:230px;height:350px;padding-left:10px;}
+        #marquee2 .content li a{display:block;width:100%;height:100%;text-decoration:none;}
+        #marquee2 .content li a img{display:block;height:100px;width:100%;height:100%;vertical-align:baseline;}
+        #marquee2 .btn a{position:absolute;top:50%;width:24px;height:43px;margin-top:-25px;background:url(images/slide_arrow3_prev.png) no-repeat 0 0;cursor:pointer;outline:none;}
+        #marquee2 .btn .btnPrev{left:0;}
+        #marquee2 .btn .btnNext{right:0;background:url(images/slide_arrow3_next.png) no-repeat 0 0;}
+
+
+        #marquee3{position:relative;width:320px;padding:32px 10px;margin:50px 0 20px;border:1px solid #e9e9e9;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+        #marquee3 .content{overflow:hidden;width:100%;height:310px;}
+        #marquee3 .content li{float:left;display:inline;width:320px;height:150px;margin-bottom:10px;}
+        #marquee3 .content li a{display:block;width:100%;height:100%;text-decoration:none;}
+        #marquee3 .content li a img{display:block;height:100px;width:100%;height:100%;vertical-align:baseline;}
+        #marquee3 .btn a{position:absolute;left:50%;width:100px;height:20px;margin-left:-50px;background:url(images/arrowUp.jpg) no-repeat 0 0;cursor:pointer;outline:none;opacity:0.3;filter:alpha(opacity=30);}
+        #marquee3 .btn .btnPrev{top:5px;}
+        #marquee3 .btn .btnNext{bottom:5px;background:url(images/arrowDown.jpg) no-repeat 0 0;}
+
+
+        #marquee4{position:relative;width:320px;padding:32px 10px;margin:50px 0 20px;border:1px solid #e9e9e9;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+        #marquee4 .content{overflow:hidden;width:100%;height:310px;}
+        #marquee4 .content li{float:left;display:inline;width:320px;height:150px;margin-bottom:10px;}
+        #marquee4 .content li a{display:block;width:100%;height:100%;text-decoration:none;}
+        #marquee4 .content li a img{display:block;height:100px;width:100%;height:100%;vertical-align:baseline;}
+        #marquee4 .btn a{position:absolute;left:50%;width:100px;height:20px;margin-left:-50px;background:url(images/arrowUp.jpg) no-repeat 0 0;cursor:pointer;outline:none;opacity:0.3;filter:alpha(opacity=30);}
+        #marquee4 .btn .btnPrev{top:5px;}
+        #marquee4 .btn .btnNext{bottom:5px;background:url(images/arrowDown.jpg) no-repeat 0 0;}
+
+
+        #marquee5{position:relative;width:690px;padding:10px;margin:50px 0 20px;border:1px solid #999;}
+        #marquee5 .content{overflow:hidden;width:100%;height:30px;}
+        #marquee5 .content li{float:left;display:inline;width:210px;height:30px;padding:0 10px;font-size:12px;line-height:30px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;background:url(images/square3_3_333333.png) no-repeat 0 center;}
+
+
+        #marquee6{position:relative;width:320px;padding:10px;margin:50px 0 20px;border:1px solid #43764D;}
+        #marquee6 .content{overflow:hidden;width:100%;height:150px;}
+        #marquee6 .content li{float:left;display:inline;width:310px;height:30px;padding-left:10px;font-size:12px;line-height:30px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;background:url(images/square3_3_333333.png) no-repeat 0 center;}
+
+    </style>
+    <!--[if IE 6]>
+
+    <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>
+        DD_belatedPNG.fix("#slide_3 .btn a");
+    </script>
+
+    <![endif]-->
+</head>
+<body>
+<h1>slide切换：图片滚动</h1>
+<div id="marquee1">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_1.jpg" alt="可爱的手机壁纸下载" />
+                    <span>可爱的手机壁纸下载(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_2.jpg" alt="清纯非主流美女高清壁纸" />
+                    <span>清纯非主流美女高清壁(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_3.jpg" alt="精选唯美风景手机壁纸" />
+                    <span>精选唯美风景手机壁纸(5张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_4.jpg" alt="最新热门美女写真高清壁纸" />
+                    <span>最新热门美女写真高清(7张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_5.jpg" alt="最新海贼王可爱动漫iPhone壁纸" />
+                    <span>最新海贼王可爱动漫i(8张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_6.jpg" alt="卡通Q版手机壁纸" />
+                    <span>卡通Q版手机壁纸(8张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_7.jpg" alt="经典动漫海贼王手机壁纸" />
+                    <span>经典动漫海贼王手机壁(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_8.jpg" alt="文艺范高清卡通壁纸" />
+                    <span>文艺范高清卡通壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_9.jpg" alt="小时代电影精美壁纸" />
+                    <span>小时代电影精美壁纸(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_10.jpg" alt="可爱杨幂高清手机壁纸" />
+                    <span>可爱杨幂高清手机壁纸(13张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_11.jpg" alt="可爱Q版海贼王one piece主题iPhone手机壁纸" />
+                    <span>可爱Q版海贼王one pi(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_12.jpg" alt="安卓手机高清壁纸推荐" />
+                    <span>安卓手机高清壁纸推荐(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_13.jpg" alt="潮人必备酷炫的美景壁纸" />
+                    <span>潮人必备酷炫的美景壁(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_14.jpg" alt="高清美女安卓手机壁纸" />
+                    <span>高清美女安卓手机壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_15.jpg" alt="非主流黑色背景文字手机壁纸" />
+                    <span>非主流黑色背景文字手(12张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_16.jpg" alt="阳光下的美女手机壁纸图集" />
+                    <span>阳光下的美女手机壁纸(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_17.jpg" alt="湖人高清手机壁纸下载" />
+                    <span>湖人高清手机壁纸下载(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_18.jpg" alt="温馨笑容的美女手机壁纸" />
+                    <span>温馨笑容的美女手机壁(17张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_19.jpg" alt="送给女孩的26个字母壁纸" />
+                    <span>送给女孩的26个字母壁(26张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_20.png" alt="修丢丢十二星座卡通手机壁纸" />
+                    <span>修丢丢十二星座卡通手(12张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_21.png" alt="三星Galaxy S4超漂亮全高清官方手机壁纸" />
+                    <span>三星Galaxy S4超漂亮(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_22.jpg" alt="Showgirl人气萌主周嘉琪iphone壁纸" />
+                    <span>Showgirl人气萌主周嘉(10张)</span>
+                </a>
+            </li><!-- 
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_23.jpg" alt="唯美的氛围手机壁纸" />
+                    <span>唯美的氛围手机壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_24.jpg" alt="阳光下的美景手机壁纸下载" />
+                    <span>懒人图库搜集整理</span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#marquee1").slide({ effect: "scrollx", auto: true, seamless: true, beLock: true });
+</pre>
+
+
+<hr />
+
+
+<div id="marquee2">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_1.jpg" alt="警察故事2013" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_2.jpg" alt="私人订制" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_3.jpg" alt="飞虎出征" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_4.jpg" alt="雷神2 黑暗世界" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_5.jpg" alt="狄仁杰之神都龙王" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_6.jpg" alt="特殊身份" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_7.jpg" alt="全民目击" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_8.jpg" alt="金蝉脱壳" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_9.jpg" alt="地球引力" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#marquee2").slide({ scrollLen: 1, effect: "scrollx", auto: true, seamless: true });
+</pre>
+
+
+<hr />
+
+
+<div id="marquee3">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/slide_1_1.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_1_2.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_1_3.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_1_4.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_1_5.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_1_6.jpg" alt="" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#marquee3").slide({ effect: "scrolly", auto: true, seamless: true, beLock: true });
+</pre>
+
+
+<hr />
+
+
+<div id="marquee4">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/banner_1.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/banner_2.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/banner_3.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/banner_4.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/banner_5.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/banner_6.jpg" alt="" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#marquee4").slide({ scrollLen: 1, effect: "scrolly", auto: true, seamless: true, interval: 3000 });
+</pre>
+
+
+<hr style="color:green;border:1px solid green;" />
+
+
+<div id="marquee5">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#">习近平看望儿童：精忠报国是我一生目标</a></li>
+            <li><a href="#">李克强：看住向企业乱伸的手 看望孤残儿童</a></li>
+            <li><a href="#">中国电信业绩惨淡：是末路还是诈败</a></li>
+            <li><a href="#">山东招远血案嫌犯开保时捷 全家7年前起信“全能神”</a></li>
+            <li><a href="#">3人驾吉普车冲撞天安门金水桥案8名嫌犯被公诉</a></li>
+            <li><a href="#">中国驻马来西亚大使馆：获救女游客已到吉隆坡</a></li>
+            <li><a href="#">广州少女无端被告知"已移民美国" 户口被注销</a></li>
+            <li><a href="#">深圳宝安区看守所原所长受贿58万获刑12年</a></li>
+            <li><a href="#">日媒：中越最近的争执令人迷惑 中国不会引发战争</a></li>
+            <li><a href="#">泰国军方政变后打压红衫军 民众烧毁红衫免惹祸</a></li>
+            <li><a href="#">范冰冰龙袍装变芭比娃娃 霸气再添可爱(图)</a></li>
+            <li><a href="#">英国华裔女护士驾保时捷下班后遇害 警方抓捕两嫌疑人</a></li>
+            <li><a href="#">印度遭轮奸吊死少女家人受种姓歧视 求助警方遭拒</a></li>
+            <li><a href="#">热火狂胜步行者问鼎东部冠军 连续四年进总决赛</a></li>
+        </ul>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#marquee5").slide({ scrollLen: 1, effect: "scrollx", auto: true, seamless: true, interval: 3000 });
+</pre>
+
+<div id="marquee6">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#">习近平看望儿童：精忠报国是我一生目标</a></li>
+            <li><a href="#">李克强：看住向企业乱伸的手 看望孤残儿童</a></li>
+            <li><a href="#">中国电信业绩惨淡：是末路还是诈败</a></li>
+            <li><a href="#">山东招远血案嫌犯开保时捷 全家7年前起信“全能神”</a></li>
+            <li><a href="#">3人驾吉普车冲撞天安门金水桥案8名嫌犯被公诉</a></li>
+            <li><a href="#">中国驻马来西亚大使馆：获救女游客已到吉隆坡</a></li>
+            <li><a href="#">广州少女无端被告知"已移民美国" 户口被注销</a></li>
+            <li><a href="#">深圳宝安区看守所原所长受贿58万获刑12年</a></li>
+            <li><a href="#">日媒：中越最近的争执令人迷惑 中国不会引发战争</a></li>
+            <li><a href="#">泰国军方政变后打压红衫军 民众烧毁红衫免惹祸</a></li>
+            <li><a href="#">范冰冰龙袍装变芭比娃娃 霸气再添可爱(图)</a></li>
+            <li><a href="#">英国华裔女护士驾保时捷下班后遇害 警方抓捕两嫌疑人</a></li>
+            <li><a href="#">印度遭轮奸吊死少女家人受种姓歧视 求助警方遭拒</a></li>
+            <li><a href="#">热火狂胜步行者问鼎东部冠军 连续四年进总决赛</a></li>
+        </ul>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#marquee6").slide({ scrollLen: 1, effect: "scrolly", auto: true, seamless: true, interval: 3000 });
+</pre>
+<script>
+    jQuery(function($)
+    {
+        $("#marquee1").slide({ effect: "scrollx", auto: true, seamless: true, beLock: true });
+        $("#marquee2").slide({ scrollLen: 1, effect: "scrollx", auto: true, seamless: true });
+
+        $("#marquee3").slide({ effect: "scrolly", auto: true, seamless: true, beLock: true });
+        $("#marquee4").slide({ scrollLen: 1, effect: "scrolly", auto: true, seamless: true });
+
+        $("#marquee5").slide({ scrollLen: 1, effect: "scrollx", auto: true, seamless: true, interval: 3000 });
+        $("#marquee6").slide({ scrollLen: 1, effect: "scrolly", auto: true, seamless: true, interval: 3000 });
+
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

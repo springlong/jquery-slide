@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片轮播-参数演示</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        body{ font: 14px/2em "Microsoft YaHei"; margin: 20px; }
+        strong{color:#c00000;}
+        code{display: inline-block;padding: 4px;border-radius: 3px;margin: 0 2px;line-height: 1em;text-indent: 0;background: #F4F4F4;font-family: "Consolas";}
+        code.block{display: block;padding: 10px 10px;}
+
+        .codeControl{overflow:hidden;width:520px;padding:5px 5px 5px 10px;border:2px solid #557908;margin-top:1em;}
+        .codeControl div{float:left;width:260px;margin-bottom:5px;}
+        .codeControl div span{font-size:12px;}
+        .codeControl div select{font-size:12px;}
+
+        .result{margin-top:1em;}
+
+        #codeCase{text-indent:0;}
+        .clear{clear:both;}
+    </style>
+</head>
+<body>
+<iframe id="viewCase" src="slide-params-demo.html" style="width:800px;height:280px;border:none;"></iframe>
+<div class="codeControl">
+    <div>
+        <span>切换方式（trigger）：</span>
+        <select class="trigger">
+            <option class="default">mouseenter</option>
+            <option>click</option>
+        </select>
+    </div>
+    <div>
+        <span>切换效果（effect）：</span>
+        <select class="effect">
+            <option class="default">none</option>
+            <option>fade</option>
+            <option>fadeIn</option>
+            <option>scrollx</option>
+            <option>scrolly</option>
+        </select>
+    </div>
+    <div>
+        <span>效果用时（duration）：</span>
+        <select class="duration">
+            <option class="default">400</option>
+            <option>600</option>
+            <option>800</option>
+            <option>1000</option>
+            <option>2000</option>
+            <option>10000</option>
+        </select>
+    </div>
+    <div>
+        <span>缓动算法（easing）：</span>
+        <select class="easing">
+            <option class="default">swing</option>
+            <option>easeInQuad</option>
+            <option>easeOutQuad</option>
+            <option>easeInOutQuad</option>
+            <option>easeInCubic</option>
+            <option>easeOutCubic</option>
+            <option>easeInOutCubic</option>
+            <option>easeInQuart</option>
+            <option>easeOutQuart</option>
+            <option>easeInOutQuart</option>
+            <option>easeInQuint</option>
+            <option>easeOutQuint</option>
+            <option>easeInOutQuint</option>
+            <option>easeInSine</option>
+            <option>easeOutSine</option>
+            <option>easeInOutSine</option>
+            <option>easeInExpo</option>
+            <option>easeOutExpo</option>
+            <option>easeInOutExpo</option>
+            <option>easeInCirc</option>
+            <option>easeOutCirc</option>
+            <option>easeInOutCirc</option>
+            <option>easeInElastic</option>
+            <option>easeOutElastic</option>
+            <option>easeInOutElastic</option>
+            <option>easeInBack</option>
+            <option>easeOutBack</option>
+            <option>easeInOutBack</option>
+            <option>easeInBounce</option>
+            <option>easeOutBounce</option>
+            <option>easeInOutBounce</option>
+        </select>
+    </div>
+    <div>
+        <span>是否自动（auto）：</span>
+        <select class="auto">
+            <option class="default">false</option>
+            <option>true</option>
+        </select>
+    </div>
+    <div>
+        <span>切换延时（interval）：</span>
+        <select class="interval">
+            <option>3000</option>
+            <option class="default" selected>5000</option>
+            <option>8000</option>
+        </select>
+    </div>
+    <div>
+        <span>默认索引（cur）：</span>
+        <select class="cur">
+            <option class="default">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+    <div>
+        <span>保留标签项（keepTags）：</span>
+        <select class="keepTags">
+            <option class="default">false</option>
+            <option>true</option>
+        </select>
+    </div>
+    <div>
+        <span>按钮锁定功能（btnDisable）：</span>
+        <select class="btnDisable">
+            <option class="default">false</option>
+            <option>true</option>
+        </select>
+    </div>
+    <div>
+        <span>鼠标悬浮延时（hoverDelay）：</span>
+        <select class="hoverDelay">
+            <option class="default">0</option>
+            <option>100</option>
+            <option>150</option>
+            <option>200</option>
+        </select>
+    </div>
+    <div>
+        <span>无缝结构（seamless）：</span>
+        <select class="seamless">
+            <option class="default">false</option>
+            <option>true</option>
+        </select>
+    </div>
+    <div>
+        <span>切换时是否锁定（beLock）：</span>
+        <select class="beLock">
+            <option class="default">false</option>
+            <option>true</option>
+        </select>
+    </div>
+</div>
+<div class="result">
+    <p><strong>代码：</strong></p>
+    <p><code class="block" id="codeCase">$("#slide_test").slide();</code></p>
+</div>
+</div>
+<script>
+    jQuery(function($){
+
+        var demoSrc = "slide-params-demo.html",
+            configStr = "?",
+            $viewCase = $("#viewCase"),
+            $codeCase = $("#codeCase"),
+            $codeControl = $("div.codeControl"),
+            $select = $codeControl.find("select");
+            
+        $select.change(function(){
+            var value = this.value,
+                name = this.className,
+                isDefault = this.children[this.selectedIndex].className.indexOf("default") >= 0,
+                param = isDefault ? "" : name + "=" + value,
+                str = "",
+                codeStr = "";
+
+            if(configStr.indexOf(name) > -1){
+                configStr = configStr.replace(new RegExp((isDefault ? "&?" : "") + name + "=[^&]+"), param);
+            }else{
+                configStr += isDefault ? "" : (configStr === "?" ? param : "&" + param);
+            }
+            $viewCase.attr("src", demoSrc + configStr.replace("?&", "?"));
+
+            $select.each(function(){
+                if(this.children[this.selectedIndex].className.indexOf("default") < 0){
+                    var value = this.value;
+                    codeStr += ", " + this.className + ":" + (/true|false|\d/.test(value) ? value : '"' + value + '"');
+                }
+            }); 
+            $codeCase.text("$(\"#slide\").slider(" + (codeStr === "" ? "" : "{" + codeStr.substring(2) + "}") + ");"); 
+        });
+
+    });
+</script>
+</body>
+</html>

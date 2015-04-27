@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：效果定制-实现内容列表的渐进式淡入效果</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+        #slideCustom{position:relative;width:980px;margin:50px 0 20px 20px;}
+        #slideCustom .content{position:relative;overflow:hidden;height:87px;border:1px solid #eff2f5;border-width: 1px 0 1px 0;margin:0 32px;}
+        #slideCustom .content ul{width: 200%;}
+        #slideCustom .content li{float:left;display:inline;overflow:hidden;width:130px;height:87px;border:1px solid #eff2f5;margin:-1px 0 0 -1px;text-align:center;font-size:12px;color:#647784;}
+        #slideCustom .content li img{display:block;width:50px;height:50px;margin:6px auto 5px;}
+        #slideCustom .btn a{position:absolute;top:0;width:32px;height:87px;border:1px solid #eff2f5;cursor:pointer;outline:none;}
+        #slideCustom .btn a:hover{border-color:#C0CCD8;}
+        #slideCustom .btn a i{display:block;width:20px;height:23px;margin:32px auto 0;background:url(images/slide_11_arrow.png) no-repeat 0 -50px;opacity:.8;}
+        #slideCustom .btn .btnPrev{left:0;}
+        #slideCustom .btn .btnNext{right:0;}
+        #slideCustom .btn .btnNext i{background-position:-98px -50px;}
+    </style>
+</head>
+<body>
+<h1>slide切换：效果定制-实现内容列表的渐进式淡入效果</h1>
+<div id="slideCustom">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_1.jpg" alt="" />
+                    <span>厦门航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_2.jpg" alt="" />
+                    <span>南方航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_3.png" alt="" />
+                    <span>东方航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_4.png" alt="" />
+                    <span>四川航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_5.png" alt="" />
+                    <span>国泰航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_6.png" alt="" />
+                    <span>中国航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_7.png" alt="" />
+                    <span>香港航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_8.png" alt="" />
+                    <span>香港快运航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_9.png" alt="" />
+                    <span>吉祥航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_10.png" alt="" />
+                    <span>海南航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_11.png" alt="" />
+                    <span>深圳航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_12.png" alt="" />
+                    <span>天津航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_13.png" alt="" />
+                    <span>祥鹏航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_14.jpg" alt="" />
+                    <span>首都航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_15.jpg" alt="" />
+                    <span>西部航空</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_11_16.jpg" alt="" />
+                    <span>山东航空</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"><i></i></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"><i></i></a>
+    </div>
+</div>
+<pre class="jsCodeNum autoHeight">
+var oSlide = new Slider("#slideCustom"),
+    done = function(){ oSlide.done(); };           
+    
+oSlide.init(function(cur, old, action){
+
+    var $lists = this.lists,
+        max = $lists.length - 1;
+        cfg = this.cfg,
+        must = action === "must",
+        duration = must ? 0 : cfg.duration,
+        start = cfg.scrollLen * cur,
+        end = cfg.scrollLen * (cur + 1) - 1,
+        delay = 0,
+        step = must ? 0 : 40;
+
+    end = end > max ? max : end;
+    
+    $lists.hide();
+    for(var i = start; i &lt;= end; i++){
+
+        $lists.eq(i).delay(delay).fadeIn(duration, cfg.easing, i === end ? done : undefined);
+        delay += step;
+    }
+});
+</pre>
+<script>
+    jQuery(function($){
+
+        var oSlide = new Slider("#slideCustom"),
+            done = function(){ oSlide.done(); };           
+            
+        oSlide.init(function(cur, old, action){
+
+            var $lists = this.lists,
+                max = $lists.length - 1;
+                cfg = this.cfg,
+                must = action === "must",
+                duration = must ? 0 : cfg.duration,
+                start = cfg.scrollLen * cur,
+                end = cfg.scrollLen * (cur + 1) - 1,
+                delay = 0,
+                step = must ? 0 : 40;
+
+            end = end > max ? max : end;
+            
+            $lists.hide();
+            for(var i = start; i <= end; i++){
+
+                $lists.eq(i).delay(delay).fadeIn(duration, cfg.easing, i === end ? done : undefined);
+                delay += step;
+            }
+        });
+
+        window.console && console.log(oSlide);
+
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

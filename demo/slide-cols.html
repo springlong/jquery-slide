@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片轮播-横屏三列</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        p{font-size:14px;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+
+        #multiCols-1_outer{position:relative;overflow:hidden;width:100%;margin:50px 0 30px;}
+        #multiCols-1{position:relative;overflow:visible;width:950px;height:400px;margin:0 auto;}
+        #multiCols-1 .content{overflow:visible;_overflow:hidden;width:100%;height:100%;margin:0 auto;}
+        #multiCols-1 .content ul{position:relative;_position:static;width:9999px;left:-960px;} /*该类效果在IE6中无法实现，需要针对IE6做特殊兼容*/
+        #multiCols-1 .content ul li{float:left;display:inline;width:950px;height:400px;margin-right:10px;}
+        #multiCols-1 .content ul li a{display:block;width:100%;height:100%;}
+        #multiCols-1 .btn a{position:absolute;left:50%;top:50%;width:50px;height:50px;margin-top:-25px;background:#303030 url(images/slide_arrow6.png) no-repeat 15px 10px;opacity:0.7;filter:alpha(opacity=70);-webkit-transition:all .2s linear;transition:all .2s linear;cursor:pointer;outline:none;}
+        #multiCols-1 .btn .btnPrev{margin-left:-475px;}
+        #multiCols-1 .btn .btnNext{margin-left:425px;background-position:20px -40px;}
+        #multiCols-1 .btn a:hover{background-color:#F55326;}
+        #multiCols-1 .shade{position:absolute;left:-1010px;top:0;width:1000px;height:100%;background:#fff;opacity:0.6;filter:alpha(opacity=60);}
+        #multiCols-1 .shadeRight{left:960px;}
+        #multiCols-1 .tag{display:none;}
+        #multiCols-1 .pos{display:none;}
+
+
+        #multiCols-2_outer{position:relative;overflow:hidden;width:100%;margin:50px 0 30px;}
+        #multiCols-2{position:relative;overflow:visible;width:980px;height:335px;margin:0 auto;}
+        #multiCols-2 .content{overflow:visible;_overflow:hidden;width:100%;height:100%;margin:0 auto;}
+        #multiCols-2 .content ul{position:relative;_position:static;width:9999px;left:-980px;} /*该类效果在IE6中无法实现，需要针对IE6做特殊兼容*/
+        #multiCols-2 .content ul li{float:left;display:inline;width:980px;height:335px;}
+        #multiCols-2 .content ul li a{display:block;width:100%;height:100%;}
+        #multiCols-2 .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:center;}
+        #multiCols-2 .tag ul{padding:11px 10px;}
+        #multiCols-2 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:8px;height:8px;padding:0 5px;font-size:0;line-height:0;background:url(images/slide_nav_7.png) no-repeat center -10px;cursor:pointer;_padding:0;_margin:0 5px;_background:#A7A7A7;}
+        #multiCols-2 .tag li.current{background-position:center 0;_background:#00B7EE;}
+        #multiCols-2 .btn div{position:absolute;left:-980px;top:0;width:100%;height:100%;cursor:pointer;}
+        #multiCols-2 .btn div span{display:block;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);}
+        #multiCols-2 .btn div a{position:absolute;right:0;top:0;width:60px;height:100%;background:url(images/slide_arrow7.png) no-repeat -120px center;outline:none;}
+        #multiCols-2 .btn div a:hover{opacity:0.6;filter:alpha(opacity=60);}
+        #multiCols-2 .btn .btnNext{left:980px;}
+        #multiCols-2 .btn .btnNext a{left:0;background-position:0 center;}
+    </style>
+    <!--[if IE 6]>
+
+    <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>
+        DD_belatedPNG.fix("#slide_3 .btn a");
+    </script>
+
+    <![endif]-->
+</head>
+<body>
+<h1>slide切换：图片轮播-横屏三列</h1>
+
+<div id="multiCols-1_outer">
+<div id="multiCols-1">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/multiCols/1-1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="images/multiCols/1-2.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="images/multiCols/1-3.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="images/multiCols/1-4.jpg" alt="" /></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+    <div class="shade shadeLeft"></div>
+    <div class="shade shadeRight"></div>
+</div>
+</div>
+<pre class="jsCodeNum">
+$("#multiCols-1").slide({ effect: "scrollx", seamless: true, auto: true, easing: "easeOutQuad" });
+</pre>
+
+
+<hr />
+
+
+<div id="multiCols-2_outer">
+<div id="multiCols-2">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/multiCols/2-1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="images/multiCols/2-2.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="images/multiCols/2-3.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="images/multiCols/2-4.jpg" alt="" /></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <div class="btnPrev j_slidePrev"><span></span><a href="javascript:void(0)" target="_self"></a></div>
+        <div class="btnNext j_slideNext"><span></span><a href="javascript:void(0)" target="_self"></a></div>
+    </div>
+</div>
+</div>
+<pre class="jsCodeNum">
+$("#multiCols-2").slide({ effect: "scrollx", seamless: true, auto: true, easing: "easeOutQuad" });
+</pre>
+<script>
+    jQuery(function($)
+    {
+        // 需要使用"easeOutQuad"缓动算法来保证切换的流程性（不能使用jQuery默认的swing算法）
+        $("#multiCols-1").slide({ effect: "scrollx", seamless: true, auto: true, easing: "easeOutQuad" });
+        $("#multiCols-2").slide({ effect: "scrollx", seamless: true, auto: true, easing: "easeOutQuad" });
+
+
+        // 代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

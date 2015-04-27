@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片轮播-基础效果</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        p{font-size:14px;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+        #slide_1{position:relative;width:600px;height:300px;margin:50px 0 30px 20px;}
+        #slide_1 .content{position:relative;overflow:hidden;width:100%;height:100%;}
+        #slide_1 .content ul li{position:relative;width:600px;height:300px;}
+        #slide_1 .content ul li a{display:block;width:600px;height:300px;}
+        #slide_1 .content ul li .text{position:absolute;left:0;bottom:0;z-index:2;width:350px;height:30px;font-size:13px;line-height:30px;font-family:Verdana;text-indent:6px;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;/**width:100%;*filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F08355C', endColorstr='#7F08355C');*/}
+        #slide_1 .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:right;filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F08355C', endColorstr='#7F08355C');/**filter:none;*/}
+        :root #slide_1 .tag{filter:none;background-color:rgba(8,53,92,0.5);}
+        #slide_1 .tag ul{*zoom:1;padding:4px 10px;opacity:0.7;filter:alpha(opacity=70);}
+        #slide_1 .tag li{display:inline-block;*zoom:1;*display:inline;width:18px;height:18px;border:1px solid #ccc;margin-left:3px;font-size:12px;line-height:18px;font-family:Verdana;letter-spacing:normal;text-align:center;color:#000;background-color:#fff;cursor:pointer;}
+        #slide_1 .tag li.current{border-color:#1188C0;color:#fff;background-color:#1072AA;}
+        #slide_1 .pos{display:none;}
+        #slide_1 .btn a{position:absolute;top:50%;width:40px;height:50px;margin-top:-30px;background:#000 url(images/slide_arrow7.png) no-repeat -187px center;opacity:0.3;filter:alpha(opacity=30);-webkit-transition:all .3s linear;transition:all .3s linear;cursor:pointer;outline:none;}
+        #slide_1 .btn a:hover{opacity:0.5;filter:alpha(opacity=50);}
+        #slide_1 .btn .btnPrev{left:0;}
+        #slide_1 .btn .btnNext{right:0;background-position:-68px center;}
+
+
+        #slide_2{position:relative;width:800px;height:280px;margin:50px 0 30px 20px;}
+        #slide_2 .content{overflow:hidden;width:100%;height:100%;}
+        #slide_2 .content ul li{width:800px;height:280px;}
+        #slide_2 .content ul li a{display:block;width:100%;height:100%;}
+        #slide_2 .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:right;filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F000000', endColorstr='#7F000000');}
+        :root #slide_2 .tag{filter:none;background-color:rgba(0,0,0,0.5);}
+        #slide_2 .tag ul{height:10px;padding:5px 10px;}
+        #slide_2 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:25px;height:10px;margin:0 3px;font-size:0;line-height:0;letter-spacing:normal;background-color:#fff;opacity:0.4;filter:alpha(opacity=40);cursor:pointer;}
+        #slide_2 .tag li.current{opacity:1;filter:alpha(opacity=100);}
+        #slide_2 .pos{position:absolute;left:10px;bottom:0;height:20px;line-height:20px;color:#fff;}
+        #slide_2 .btn a{position:absolute;top:50%;width:45px;height:100px;margin-top:-50px;background:url(images/slide_arrow2.png) no-repeat 0 0;opacity:0.2;filter:alpha(opacity=20);-webkit-transition:all .3s linear;transition:all .3s linear;cursor:pointer;outline:none;}
+        #slide_2 .btn a:hover{opacity:0.5;filter:alpha(opacity=50);}
+        #slide_2 .btn .btnPrev{left:0;}
+        #slide_2 .btn .btnNext{right:0;background-position:right top;}
+
+
+        #slide_3{position:relative;width:956px;height:300px;margin:50px 0 30px 20px;}
+        #slide_3 .content{overflow:hidden;width:100%;height:100%;}
+        #slide_3 .content ul li{width:956px;height:300px;}
+        #slide_3 .content ul li a{display:block;width:100%;height:100%;}
+        #slide_3 .tag{position:absolute;left:50%;bottom:8px;width:140px;border:1px solid #E0E0DE;border-radius:8px;margin-left:-71px;font-size:0;letter-spacing:-8px;text-align:center;background:#fff;opacity:0.7;filter:alpha(opacity=70);}
+        #slide_3 .tag ul{height:14px;padding:1px 0;}
+        #slide_3 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:14px;height:14px;margin:0 3px;font-size:0;line-height:0;background:url(images/slide_nav_5.png) no-repeat right top;cursor:pointer;}
+        #slide_3 .tag li.current{background:url(images/slide_nav_5.png) no-repeat;}
+        #slide_3 .btn a{position:absolute;top:50%;width:46px;height:81px;margin-top:-40px;background:url(images/slide_arrow5.png) no-repeat 0 0;cursor:pointer;outline:none;}
+        #slide_3 .btn .btnPrev{left:0;}
+        #slide_3 .btn .btnNext{right:0;background-position:right top;}
+        #slide_3 .pos{display:none;}
+    </style>
+    <!--[if IE 6]>
+
+    <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>
+        DD_belatedPNG.fix("#slide_3 .btn a");
+    </script>
+
+    <![endif]-->
+</head>
+<body>
+<h1>slide切换：图片轮播-基础效果</h1>
+
+<div id="slide_1">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#"><img src="images/banner_7.jpg" alt="" /></a>
+                <span class="text">这是标题1</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/banner_8.jpg" alt="" /></a>
+                <span class="text">这是标题2</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/banner_9.jpg" alt="" /></a>
+                <span class="text">这是标题3</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/banner_10.jpg" alt="" /></a>
+                <span class="text">这是标题4</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/banner_11.jpg" alt="" /></a>
+                <span class="text">这是标题5</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/banner_12.jpg" alt="" /></a>
+                <span class="text">这是标题6</span>
+            </li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_1").slide();
+</pre>
+
+
+<hr />
+
+
+
+<div id="slide_2">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/slide_2_1.jpg" alt="品牌特卖会全场1折起" /></a></li>
+            <li><a href="#"><img src="images/slide_2_2.jpg" alt="年中清仓1-3折全场包邮" /></a></li>
+            <li><a href="#"><img src="images/slide_2_3.jpg" alt="潮机大放假 精选潮机5折起" /></a></li>
+            <li><a href="#"><img src="images/slide_2_4.jpg" alt="好锅汇美食更健康" /></a></li>
+            <li><a href="#"><img src="images/slide_2_5.jpg" alt="千姿百态花裙 百款新品 免费试穿" /></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+    <div class="pos">
+        <span class="pos-cur j_slideCur">1</span><span class="pos-line">/</span><span class="pos-pages j_slidePages">5</span>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_2").slide({ effect: "fadeIn", hoverDelay: 150 });
+</pre>
+
+
+<hr />
+
+
+<div id="slide_3">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/slide_3_1.jpg" alt="2010罗志祥舞法舞天" /></a></li>
+            <li><a href="#"><img src="images/slide_3_2.jpg" alt="张学友世纪演唱会" /></a></li>
+            <li><a href="#"><img src="images/slide_3_3.jpg" alt="爱无止境空气补给站" /></a></li>
+            <li><a href="#"><img src="images/slide_3_4.jpg" alt="迈克学摇滚中国巡演北京演唱会" /></a></li>
+            <li><a href="#"><img src="images/slide_3_5.jpg" alt="2010这就是爱 张杰北京演唱会" /></a></li>
+            <li><a href="#"><img src="images/slide_3_6.jpg" alt="2010蔡琴北京演唱会" /></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_3").slide({ trigger: "click", effect: "fade" });
+</pre>
+<script>
+    jQuery(function($)
+    {
+        $("#slide_1").slide();
+        $("#slide_2").slide({ effect: "fadeIn", hoverDelay: 150 });
+        $("#slide_3").slide({ trigger: "click", effect: "fade" });
+
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

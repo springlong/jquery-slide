@@ -1,0 +1,40 @@
+body,header,footer,aside,article,section,hgroup,nav,menu,canvas,output,dialog,datalist,details,figure,figcaption,audio,video,progress,mark,time,object,embed,div,p,address,blockquote,pre,dl,dt,dd,ol,ul,li,map,table,caption,thead,tbody,tfoot,tr,th,td,form,fieldset,legend,img,input,button,textarea,iframe,h1,h2,h3,h4,h5,h6{margin:0;padding:0;border:none;}
+body,input,button,select,textarea{font-size:12px;font-family:Simsun;color:#333;}
+h1,h2,h3,h4,h5,h6{font-size:12px;}
+body{background:#fff;}
+table{border-collapse:collapse;border-spacing:0;table-layout:fixed;}
+address,em,i{font-style:normal;}
+button{cursor:pointer;}
+button::-moz-focus-inner{border:0;padding:0;}
+textarea{resize:none;}
+li{list-style:none;overflow:hidden;}
+a{color:#333;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a *{cursor:pointer;}
+
+.none{float:left;width:0;height:0;overflow:hidden;}
+.clearfix:after{content:"";clear:both;display:block;height:0;}
+.clearfix{zoom:1;}
+.copyright{font-family:"Arial";}
+p.noText{line-height:40px;text-indent:2em;background:none;}
+.advert{clear:both;}
+.advert img{display:block;vertical-align:baseline;}
+
+.mt_10{margin-top:10px;}
+.mb_10{margin-bottom:10px;}
+.ml_10{margin-left:10px;}
+.mr_10{margin-right:10px;}
+.m_auto{margin-left:auto;margin-right:auto;}
+.f_left{float:left;display:inline;}
+.f_right{float:right;display:inline;}
+
+.cnzz{clear:both;float:left;display:inline;overflow:hidden;height:20px;margin-top:-20px;}
+.jiathis{position:absolute;top:-30px;right:0;}
+#openURL{position:absolute;left:-1000px;top:0;overflow:hidden;}
+#calendarPanel{position:absolute;left:-9999px;top:0;}
+#calltak,#vud_div,#lr_swf_div{position:absolute;width:0 !important;height:0 !important;overflow:hidden;}
+
+.floatLeftBottom{position:fixed;left:0;bottom:0;z-index:2147483647;}
+* html .floatLeftBottom{position:absolute;left:0;bottom:auto;top:expression(eval(document.documentElement.clientHeight + document.documentElement.scrollTop - this.offsetHeight));}
+.floatRightBottom{position:fixed;right:0;bottom:0;z-index:2147483647;}
+* html .floatRightBottom{position:absolute;right:0;bottom:auto;top:expression(eval(document.documentElement.clientHeight + document.documentElement.scrollTop - this.offsetHeight));}

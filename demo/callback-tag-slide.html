@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：回调函数-标签项的滑动处理</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 20px 100px;font-family: arial, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', '宋体', \5b8b\4f53, Tahoma, Arial, Helvetica, STHeiti; }
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        h2{margin:50px 0 20px;font-size:18px;}
+        p{font-size:14px;}
+        hr{margin:50px 0;}
+
+        #slideCallback{position: relative; width: 425px; height: 318px;}
+        #slideCallback .content{overflow: hidden; height: 260px;}
+        #slideCallback .content li{ height: 260px;}
+        #slideCallback .content a{position: relative;}
+        #slideCallback .content span{position: absolute; left: 0; bottom: 0; width: 100%; height: 28px; font-size: 15px; line-height: 28px; text-indent: 15px; overflow: hidden; text-overflow: ellipsis; whiat-space: nowrap; color: #e6e6e6; filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#4C000000', endColorstr='#4C000000'); background:rgba(0,0,0,0.3);}
+        :root #slideCallback .content span{filter: none;}
+        #slideCallback .tag{ padding: 8px 0 8px 15px; height: 42px; background-color: #191919;}
+        #slideCallback .tagInner{overflow: hidden; width: 100%; height: 100%;}
+        #slideCallback .tag ul{overflow: hidden; height: 42px;}
+        #slideCallback .tag li{float: left; margin-right: 12px;}
+        #slideCallback .tag li a{display: block; width: 68px; height: 40px; border: 1px solid #000000; opacity: 0.4; filter:alpha(opaicty=40); -webkit-transition: opacity .5s; transition: opacity .5s;}
+        #slideCallback .tag li.current a, #slideCallback .tag li a:hover{opacity: 1; filter:alpha(opaicty=100);}
+        #slideCallback .tag li.current a{border-color:#389CFF; }
+        #slideCallback .btn a{position:absolute;top:100px;display:none;width:40px;height:50px;background: url(images/slide_arrow8.png) no-repeat center 0;opacity:0.8;filter:alpha(opacity=80);cursor:pointer;outline:none;}
+        #slideCallback .btn a:hover{opacity:1;filter:alpha(opacity=100);}
+        #slideCallback .btn .btnPrev{left:0;}
+        #slideCallback .btn .btnNext{right:0;background-position:center -50px;}
+        #slideCallback:hover .btn a{display: block;}
+
+        #slideCallback2{position:relative;width:750px;height:422px;}
+        #slideCallback2 .content{position:absolute;right:0;top:0;z-index:2;overflow:hidden;width:555px;height:420px;border:1px solid #C00F15;background-color:#fcfcfc;}
+        #slideCallback2 .contentInner{height:420px;}
+        #slideCallback2 .content .wrap{width:555px;height:420px;}
+        #slideCallback2 .content .wrap h3{height:30px;padding:10px 0 10px 25px;font-size:14px;line-height:30px;color:#333;}
+        #slideCallback2 .content .wrap li{float:left;display:inline;overflow:hidden;width:152px;height:177px;margin:0 0 10px 24px;font-size:12px;}
+        #slideCallback2 .content .wrap li a{display:block;width:100%;height:100%;text-decoration:none;}
+        #slideCallback2 .content .wrap li img{display:block;width:150px;height:150px;border:1px solid #ddd;vertical-align:baseline;}
+        #slideCallback2 .content .wrap li span{display:block;height:20px;margin-top:5px;line-height:20px;text-align:center;color:#5E5E5E;}
+        #slideCallback2 .content .wrap li a:hover img{border-color:#C00F15;}
+        #slideCallback2 .tag{overflow:hidden;position:absolute;left:0;top:37px;z-index:3;width:194px;height:348px;}
+        #slideCallback2 .tag ul{overflow:hidden;height:348px;}
+        #slideCallback2 .tag li{width:193px;height:58px;background:url(images/tagMove/bg_all.png) no-repeat;}
+        #slideCallback2 .tag li.current{width:194px;}
+        #slideCallback2 .tag li a{display:block;width:100%;height:100%;text-indent:-9999px;outline:none;}
+        #slideCallback2 .tag .tag_1{background-position:-194px 0;}
+        #slideCallback2 .tag .tag_2{background-position:-194px -58px;}
+        #slideCallback2 .tag .tag_3{background-position:-194px -116px;}
+        #slideCallback2 .tag .tag_4{background-position:-194px -174px;}
+        #slideCallback2 .tag .tag_5{background-position:-194px -232px;}
+        #slideCallback2 .tag .tag_6{background-position:-194px -290px;}
+        #slideCallback2 .tag .tag_7{background-position:-194px -348px;}
+        #slideCallback2 .tag .tag_8{background-position:-194px -406px;}
+        #slideCallback2 .tag .tag_9{background-position:-194px -464px;}
+        #slideCallback2 .tag .tag_10{background-position:-194px -522px;}
+        #slideCallback2 .tag .tag_1.current{background-position:0 0;}
+        #slideCallback2 .tag .tag_2.current{background-position:0 -58px;}
+        #slideCallback2 .tag .tag_3.current{background-position:0 -116px;}
+        #slideCallback2 .tag .tag_4.current{background-position:0 -174px;}
+        #slideCallback2 .tag .tag_5.current{background-position:0 -232px;}
+        #slideCallback2 .tag .tag_6.current{background-position:0 -290px;}
+        #slideCallback2 .tag .tag_7.current{background-position:0 -348px;}
+        #slideCallback2 .tag .tag_8.current{background-position:0 -406px;}
+        #slideCallback2 .tag .tag_9.current{background-position:0 -464px;}
+        #slideCallback2 .tag .tag_10.current{background-position:0 -522px;}
+        #slideCallback2 .btn a{position:absolute;left:0;width:194px;height:35px;background:url(images/tagMove/bg_all.png) no-repeat 0 -580px;outline:none;}
+        #slideCallback2 .btn .btnPrev{top:0;}
+        #slideCallback2 .btn .btnNext{bottom:0;background-position:0 -615px;}
+
+    </style>
+</head>
+<body>
+<h1>slide切换：回调函数-标签项的滑动处理</h1>
+
+<div id="slideCallback">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/tagMove/pic-101.jpg" alt=""><span>外媒眼中的中国水污染</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-102.jpg" alt=""><span>无声跨国恋</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-103.jpg" alt=""><span>另一种托举哥</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-104.jpg" alt=""><span>男子弃国企工作荒野铸剑 一把剑卖20万</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-105.jpg" alt=""><span>镜头下的美国华裔身份</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-106.jpg" alt=""><span>蒋洁敏出庭受审</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-107.jpg" alt=""><span>朝鲜女大学生穿制服外出参观</span></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-108.jpg" alt=""><span>文莱王子大婚现场</span></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+    <div class="tagInner">
+        <ul class="j_slideTags">
+            <li><a href="#"><img src="images/tagMove/pic-101-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-102-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-103-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-104-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-105-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-106-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-107-s.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/tagMove/pic-108-s.jpg" alt=""></a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slideCallback").slide({ trigger: "click", keepTags: true }, checkTagScroll("#slideCallback", true));
+</pre>
+
+
+
+<hr>
+
+
+
+
+<div id="slideCallback2">
+    <div class="content">
+        <div class="contentInner j_slideLists">
+            <div class="wrap">
+                <h3>餐饮行业-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_1.jpg" alt="" /><span>餐饮行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>餐饮行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_7.jpg" alt="" /><span>餐饮行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_1.jpg" alt="" /><span>餐饮行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_1.jpg" alt="" /><span>餐饮行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_8.jpg" alt="" /><span>餐饮行业</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>旅游行业-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>旅游行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_9.jpg" alt="" /><span>旅游行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_10.jpg" alt="" /><span>旅游行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>旅游行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>旅游行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_5.jpg" alt="" /><span>旅游行业</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>房地产行业-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>房地产行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_5.jpg" alt="" /><span>房地产行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>房地产行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>房地产行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>房地产行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_7.jpg" alt="" /><span>房地产行业</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>教育培训-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_4.jpg" alt="" /><span>教育培训</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_8.jpg" alt="" /><span>教育培训</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_9.jpg" alt="" /><span>教育培训</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_4.jpg" alt="" /><span>教育培训</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_4.jpg" alt="" /><span>教育培训</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_10.jpg" alt="" /><span>教育培训</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>汽车用品-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_5.jpg" alt="" /><span>汽车用品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>汽车用品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_7.jpg" alt="" /><span>汽车用品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_5.jpg" alt="" /><span>汽车用品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_5.jpg" alt="" /><span>汽车用品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_8.jpg" alt="" /><span>汽车用品</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>电子产品-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>电子产品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_10.jpg" alt="" /><span>电子产品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_1.jpg" alt="" /><span>电子产品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>电子产品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>电子产品</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>电子产品</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>律所行业-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_7.jpg" alt="" /><span>律所行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_1.jpg" alt="" /><span>律所行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>律所行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_7.jpg" alt="" /><span>律所行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_7.jpg" alt="" /><span>律所行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>律所行业</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>管理咨询-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_8.jpg" alt="" /><span>管理咨询</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_5.jpg" alt="" /><span>管理咨询</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_4.jpg" alt="" /><span>管理咨询</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_8.jpg" alt="" /><span>管理咨询</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_8.jpg" alt="" /><span>管理咨询</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>管理咨询</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>服装行业-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_9.jpg" alt="" /><span>服装行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_4.jpg" alt="" /><span>服装行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>服装行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_9.jpg" alt="" /><span>服装行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_9.jpg" alt="" /><span>服装行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>服装行业</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wrap">
+                <h3>酒店行业-内容展示</h3>
+                <ul>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_10.jpg" alt="" /><span>酒店行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_2.jpg" alt="" /><span>酒店行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_3.jpg" alt="" /><span>酒店行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_10.jpg" alt="" /><span>酒店行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_10.jpg" alt="" /><span>酒店行业</span></a>
+                    </li>
+                    <li>
+                        <a href=""><img src="images/tagMove/pic_6.jpg" alt="" /><span>酒店行业</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="tag_1 current"><a href="#">餐饮行业</a></li>
+            <li class="tag_2"><a href="#">旅游行业</a></li>
+            <li class="tag_3"><a href="#">房地产行业</a></li>
+            <li class="tag_4"><a href="#">教育培训</a></li>
+            <li class="tag_5"><a href="#">汽车用品</a></li>
+            <li class="tag_6"><a href="#">电子产品</a></li>
+            <li class="tag_7"><a href="#">律所行业</a></li>
+            <li class="tag_8"><a href="#">管理咨询</a></li>
+            <li class="tag_9"><a href="#">服装行业</a></li>
+            <li class="tag_10"><a href="#">酒店行业</a></li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slideCallback2").slide({ trigger: "click", keepTags: true }, checkTagScroll("#slideCallback2", false));
+</pre>
+
+
+
+<hr>
+<h2>回调处理函数</h2>
+<pre class="jsCodeNum autoHeight">
+/**
+ * 负责标签项滑动的回调处理
+ * @param  {string}  id      目标元素的选择器字符串
+ * @param  {Boolean} isWidth 是否为水平布局
+ * @return {function}        执行函数
+ */
+function checkTagScroll(id, isWidth)
+{
+    var $ele = $(id),
+        $tagBox = $ele.find(".j_slideTags"),
+        $tagOuter = $tagBox.parent(),
+        attr = isWidth ? "width" : "height",
+        outerAttr = isWidth ? "outerWidth" : "outerHeight",
+        scrollAttr = isWidth ? "scrollWidth" : "scrollHeight",
+        scrollProp = isWidth ? "scrollLeft" : "scrollTop",
+        base = $tagBox.children()[outerAttr](true),
+        tagSee = Math.round($tagOuter[attr]() / base),
+        distance = 0,
+        startFun;
+
+    if(isWidth){
+        $tagBox.css("width", base * $tagBox.children().length);
+    }
+
+    if($tagBox[0][scrollAttr] > $tagOuter[attr]()){
+
+        $tagBox = isWidth ? $tagOuter : $tagBox;
+
+        startFun = function(cur, old, action){
+
+            var that = this,
+                scrolled = $tagBox[0][scrollProp],  // 当前已经滑动的距离
+                scrolledNum = scrolled / base;   // 当前已经滑动的标签数量
+
+            // 切换至首页
+            if(cur === 0){
+                distance = 0;
+            }
+            // 切换至尾页
+            else if(cur === that.pages - 1){
+                distance = (that.pages - tagSee) * base;
+            }
+            // 向后切换（下一页）
+            else if(cur > old && cur + 1 - scrolledNum === tagSee){
+                distance += base;
+            }
+            // 向前切换（上一页）
+            else if(cur &lt; old && cur + 1 - scrolledNum === 1){
+                distance -= base;
+            }
+
+            // 标签运动时锁定切换
+            if(scrolled !== distance){
+                that.lock();
+                $tagBox.stop().animate(isWidth ? {scrollLeft: distance} : {scrollTop: distance}, function(){ that.unlock() });
+            }
+        };
+    }
+
+    return startFun;
+}
+</pre>
+
+
+<script type="text/javascript">
+    jQuery(function($)
+    {        
+        $("#slideCallback").slide({ trigger: "click", keepTags: true }, checkTagScroll("#slideCallback", true));
+
+        $("#slideCallback2").slide({ trigger: "click", keepTags: true }, checkTagScroll("#slideCallback2", false));
+
+
+        /**
+         * 负责标签项滑动的回调处理
+         * @param  {string}  id      目标元素的选择器字符串
+         * @param  {Boolean} isWidth 是否为水平布局
+         * @return {function}        执行函数
+         */
+        function checkTagScroll(id, isWidth)
+        {
+            var $ele = $(id),
+                $tagBox = $ele.find(".j_slideTags"),
+                $tagOuter = $tagBox.parent(),
+                attr = isWidth ? "width" : "height",
+                outerAttr = isWidth ? "outerWidth" : "outerHeight",
+                scrollAttr = isWidth ? "scrollWidth" : "scrollHeight",
+                scrollProp = isWidth ? "scrollLeft" : "scrollTop",
+                base = $tagBox.children()[outerAttr](true),
+                tagSee = Math.round($tagOuter[attr]() / base),
+                distance = 0,
+                startFun;
+
+            if(isWidth){
+                $tagBox.css("width", base * $tagBox.children().length);
+            }
+
+            if($tagBox[0][scrollAttr] > $tagOuter[attr]()){
+
+                $tagBox = isWidth ? $tagOuter : $tagBox;
+
+                startFun = function(cur, old, action){
+
+                    var that = this,
+                        scrolled = $tagBox[0][scrollProp],  // 当前已经滑动的距离
+                        scrolledNum = scrolled / base;   // 当前已经滑动的标签数量
+
+                    // 切换至首页
+                    if(cur === 0){
+                        distance = 0;
+                    }
+                    // 切换至尾页
+                    else if(cur === that.pages - 1){
+                        distance = (that.pages - tagSee) * base;
+                    }
+                    // 向后切换（下一页）
+                    else if(cur > old && cur + 1 - scrolledNum === tagSee){
+                        distance += base;
+                    }
+                    // 向前切换（上一页）
+                    else if(cur < old && cur + 1 - scrolledNum === 1){
+                        distance -= base;
+                    }
+
+                    // 标签运动时锁定切换
+                    if(scrolled !== distance){
+                        that.lock();
+                        $tagBox.stop().animate(isWidth ? {scrollLeft: distance} : {scrollTop: distance}, function(){ that.unlock() });
+                    }
+                };
+            }
+
+            return startFun;
+        }
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+/*代码着色*/
+.codeView{width:1000px;margin:0 auto;}
+.codeView h2{font-size:18px;padding:10px 0 10px 10px;border-left:4px solid #5F890A;margin:30px 0;background:#f5f5f5;}
+
+
+/*自定义HTML语法高亮方案*/
+.sh_custom_html{background:none;padding:0;margin:0;border:0 none;}
+.sh_custom_html .sh_sourceCode{max-height:500px;color:#333;background-color:#fafafa;font-weight:normal;font-style:normal;}
+.sh_custom_html .sh_sourceCode .sh_comment{color:#087E1A;font-weight:normal;font-style:normal;}/*注释*/
+.sh_custom_html .sh_sourceCode .sh_symbol{color:#333;font-weight:bold;font-style:normal;}/*符号（等号）*/
+.sh_custom_html .sh_sourceCode .sh_type{color:#c00000;font-weight:bold;font-style:normal;}/*属性*/
+.sh_custom_html .sh_sourceCode .sh_string{color:#277C90;font-weight:normal;font-style:normal;}/*属性值*/
+.sh_custom_html .sh_sourceCode .sh_url{color:#333;font-weight:normal;font-style:normal;}/*链接*/
+.sh_custom_html .sh_sourceCode .sh_keyword{color:#0000ff;font-weight:normal;font-style:normal;}/*HTML标签*/
+.sh_custom_html .sh_sourceCode .sh_preproc{color:#0000ff;font-weight:normal;font-style:normal;}/*文档类型*/
+.sh_custom_html .autoHeight{max-height:none !important;}
+.sh_custom_html .largerHeight{max-height:800px !important;}
+
+/*自定义CSS语法高亮方案*/
+.sh_custom_css{background:none;padding:0;margin:0;border:0 none;}
+.sh_custom_css .sh_sourceCode{max-height:500px;color:#333;background-color:#fafafa;font-weight:normal;font-style:normal;}
+.sh_custom_css .sh_sourceCode .sh_comment{color:#087E1A;font-weight:normal;font-style:normal;}/*注释*/
+.sh_custom_css .sh_sourceCode .sh_symbol{color:#333;font-weight:bold;font-style:normal;}/*符号（分号、逗号、-等）*/
+.sh_custom_css .sh_sourceCode .sh_property{color:#c00000;font-weight:normal;font-style:normal;}/*属性*/
+.sh_custom_css .sh_sourceCode .sh_value{color:#0000ff;font-weight:normal;font-style:normal;}/*属性值*/
+.sh_custom_css .sh_sourceCode .sh_url{color:#333;font-weight:normal;font-style:normal;}/*链接*/
+.sh_custom_css .sh_sourceCode .sh_string{color:#0000ff;font-weight:normal;font-style:normal;}/*字符串（以#开头的部分）*/
+.sh_custom_css .autoHeight{max-height:none !important;}
+.sh_custom_css .largerHeight{max-height:800px !important;}
+
+/*自定义JS语法高亮方案*/
+.sh_custom_js{background:none;padding:0;margin:0;border:0 none;}
+.sh_custom_js .sh_sourceCode{max-height:500px;color:#333;background-color:#fafafa;font-weight:normal;font-style:normal;}
+.sh_custom_js .sh_sourceCode .sh_comment{color:#087E1A;font-weight:normal;font-style:normal;}/*注释*/
+.sh_custom_js .sh_sourceCode .sh_symbol{color:#333;font-weight:bold;font-style:normal;}/*运算符*/
+.sh_custom_js .sh_sourceCode .sh_cbracket{color:#81640A;font-weight:normal;font-style:normal;}/*花括号*/
+.sh_custom_js .sh_sourceCode .sh_number{color:#333;font-weight:bold;font-style:normal;}/*数字*/
+.sh_custom_js .sh_sourceCode .sh_function{color:#E00F0F;font-weight:normal;font-style:normal;}/*函数名称*/
+.sh_custom_js .sh_sourceCode .sh_string{color:#FF33CC;font-weight:normal;font-style:normal;}/*字符串*/
+.sh_custom_js .sh_sourceCode .sh_keyword{color:#0000ff;font-weight:normal;font-style:normal;}/*关键字*/
+.sh_custom_js .sh_sourceCode .sh_url{color:#333;font-weight:normal;font-style:normal;}/*链接*/
+.sh_custom_js .sh_sourceCode .sh_regexp{color:#AF8305;font-weight:normal;font-style:normal;}/*正则表达式*/
+.sh_custom_js .autoHeight{max-height:none !important;}
+.sh_custom_js .largerHeight{max-height:800px !important;}
+
+/*代码块的外围容器*/
+.snippet-wrap{position:relative;}
+.snippet-wrap ::selection{background-color:#669900;color:#ffffff;}
+.snippet-wrap ::-moz-selection{background-color:#669900;color:#ffffff;}
+.snippet-wrap pre{padding:0;margin:0;}
+.snippet-wrap a{text-decoration:underline;}
+
+/*代码块*/
+.snippet-wrap pre.sh_sourceCode{position:relative;overflow:auto;padding:15px;border:1px solid #ccc;border-radius:5px;margin:1em auto;font-size:12px;line-height:1.4em;font-family:Consolas, "Liberation Mono", Menlo, Courier, monospace;}
+
+/*代码行显示行号时*/
+.snippet-wrap .snippet-num{padding:0 0 0 35px !important;margin:0 !important;}
+.snippet-wrap .snippet-num li{overflow:visible;padding:0 0 0 5px !important;border:none !important;margin:0 !important;_word-wrap:break-word;list-style:decimal-leading-zero outside none !important;}
+
+/*代码行不显示行号时*/
+.snippet-wrap .snippet-no-num{padding:0 !important;margin:0 !important;}
+.snippet-wrap .snippet-no-num li{overflow:visible;padding:0 !important;border:none !important;margin:0 !important;_word-wrap:break-word;list-style:none;}
+
+/*代码方框*/
+.snippet-wrap li.box{position:relative;border:1px solid !important;padding-left:5px !important;margin-left:-6px !important;}
+.snippet-wrap li.box .box-sp{display:none;}
+.snippet-wrap li.box-top {border-width:1px 1px 0 !important;}
+.snippet-wrap li.box-bot {border-width:0 1px 1px !important;}
+.snippet-wrap li.box-mid {border-width:0 1px !important;}
+.snippet-wrap .snippet-num li.box{padding-left:5px !important;margin-left:-39px !important;list-style-position:inside !important;}
+.snippet-wrap .snippet-num li.box .box-sp{display:inline-block;width:10px;}
+
+/*右上角的功能菜单*/
+.snippet-wrap .snippet-menu,.snippet-wrap .snippet-hide{position:absolute;top:0px;right:20px;font-size:13px;z-index:1;background-color:transparent;}
+.snippet-wrap .snippet-menu a,.snippet-wrap .snippet-hide a{padding:0 5px;}
+
+/*代码折叠的链接容器*/
+.snippet-wrap .snippet-hide{bottom:10px;top:auto;}
+
+/*代码折叠后的容器*/
+.snippet-reveal pre.sh_sourceCode{height:2.5em !important;padding:0;}
+.snippet-reveal pre.sh_sourceCode a{display:block;height:2.5em;padding:0 10px;line-height:2.5em;text-align:right;}
+.snippet-reveal pre.sh_sourceCode a:hover{background-color:#eee;}

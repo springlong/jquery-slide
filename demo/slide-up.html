@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片轮播-进阶效果</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        p{font-size:14px;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+        .slide_1{position:relative;width:710px;padding:9px 9px 3px;margin:50px 0 30px 20px;border:1px solid #e9e9e9;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+        .slide_1 .content{position:relative;overflow:hidden;width:100%;height:350px;}
+        .slide_1 .content ul{zoom:1;margin-left:-10px;}
+        .slide_1 .content li{position:relative;float:left;width:230px;height:350px;overflow:hidden;padding-left:10px;}
+        .slide_1 .content li a{text-decoration:none;}
+        .slide_1 .content li a img{display:block;width:230px;height:350px;vertical-align:baseline;}
+        .slide_1 .content li a span{position:relative;top:0;display:block;width:100%;height:30px;font:14px/30px "Microsoft YaHei";text-align:center;color:#fff;filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#80000000,endColorstr=#80000000);-webkit-transition:all .2s linear;transition:all .2s linear;}
+        :root .slide_1 .content li a span{filter:none;background:rgba(0,0,0,0.5);}
+        .slide_1 .content li a:hover{position:static;}/*兼容IE6*/
+        .slide_1 .content li a:hover span{top:-30px;}
+        .slide_1 .tag{width:100%;font-size:0;letter-spacing:-8px;text-align:center;}
+        .slide_1 .tag ul{height:22px;padding:11px 10px;}
+        .slide_1 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:22px;height:22px;padding:0 3px;font-size:0;line-height:0;background:url(images/slide_nav_6.png) no-repeat center bottom;cursor:pointer;}
+        .slide_1 .tag li.current{background-position:center top;}
+        .slide_1 .pos{display:none;}
+        .slide_1 .btn{display:none;}
+
+
+        #slide_2{position:relative;overflow:hidden;width:1000px;margin:50px 0 30px 20px;background-color:#1C1C1C;}
+        #slide_2 .content{position:relative;overflow:hidden;width:990px;height:376px;border:5px solid #2f2f2f;perspective:1300px;}
+        #slide_2 .content li{overflow:hidden;width:990px;height:376px;}
+        #slide_2 .content li a{display:block;width:100%;height:100%;}
+        #slide_2 .tag{width:100%;font-size:0;letter-spacing:-8px;text-align:center;}
+        #slide_2 .tag ul{padding:10px 15px;}
+        #slide_2 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:137px;letter-spacing:normal;}
+        #slide_2 .tag li a{position:relative;display:block;padding:4px;text-decoration:none;background-color:#1c1c1c;-webkit-transition:all .2s linear;transition:all .2s linear;cursor:pointer;outline:none;}
+        #slide_2 .tag li a:hover,#slide_2 .tag .current a{top:-5px;z-index:2;background-color:#503769;}
+        #slide_2 .tag li img{display:block;width:129px;height:69px;padding-bottom:3px;vertical-align:baseline;}
+        #slide_2 .tag li .name{overflow:hidden;height:25px;font-size:18px;line-height:25px;font-family:"Microsoft YaHei";font-weight:bold;text-align:center;color:#fff;}
+        #slide_2 .tag li a:hover .name,#slide_2 .tag .current .name{color:#DBC98C;}
+        #slide_2 .tag li .shortcat{overflow:hidden;height:20px;font-size:12px;line-height:20px;text-align:center;color:#7D7D7D;}
+        #slide_2 .tag li a:hover .shortcat,#slide_2 .tag .current .shortcat{color:#FFF;}
+        #slide_2 .pos{display:none;}
+        #slide_2 .btn{display:none;}
+
+
+        #slide_3_outer{height:350px;margin:50px 0 30px;background-color:#111;}
+        #slide_3{overflow:hidden;width:1000px;margin:0 auto;}
+        #slide_3 .content{position:relative;float:left;overflow:hidden;width:772px;height:310px;margin-top:20px;color:#fff;}
+        #slide_3 .content li{width:772px;height:310px;}
+        #slide_3 .content li img{width:200px;height:300px;border:2px #111 solid;}
+        #slide_3 .content li a.img{float:left;display:block;width:205px;border:3px #000 solid;}
+        #slide_3 .content .intro{ height:310px;width:530px;float:left;padding-left:15px;}
+        #slide_3 .content .title{ line-height:30px;padding:10px 0 14px 0;}
+        #slide_3 .content .title h2 a{color:#fff;font-size:26px;font-weight:normal;font-family:"Microsoft Yahei" }
+        #slide_3 .content .title h2 a:hover{text-decoration:underline;}
+        #slide_3 .content .title span{color:#f60;font-size:14px;}
+        #slide_3 .content .info{overflow:hidden;}
+        #slide_3 .content .info p,
+        #slide_3 .content .desc{font-size:14px;color:#999;}
+        #slide_3 .content .info p{width:250px;height:25px; overflow:hidden;float:left;}
+        #slide_3 .content .info p span,
+        #slide_3 .content .desc span{color:#ccc;}
+        #slide_3 .content .info p.long{width:500px;margin-bottom:5px;}
+        #slide_3 .content .desc{display:block;height:96px;line-height:24px;padding-bottom:10px;overflow:hidden;}
+        #slide_3 .content .play{display:block;width:136px;height:29px;background:url(images/slide_movie/silder-play.png) no-repeat;text-indent:-9999px;}
+        #slide_3 .content .play:hover{background-position:0 -30px;}
+        #slide_3 .tag{float:left;overflow:hidden;width:228px;height:288px;margin-top:32px;font-size:0;letter-spacing:-8px;text-align:center;background:#000;}
+        #slide_3 .tag ul{padding:7px;}
+        #slide_3 .tag li{display:inline-block;*zoom:1;*display:inline;margin:0 5px 5px 0px;letter-spacing:normal;}
+        #slide_3 .tag li a{display:block;padding:1px;border:2px #000 solid;outline:none;}
+        #slide_3 .tag li img{width:60px;height:80px;}
+        #slide_3 .tag li.current a,
+        #slide_3 .tag li a:hover{border:2px #f60 solid;}
+        #slide_3 .pos{display:none;}
+        #slide_3 .btn{display:none;}
+
+
+        #slide_4{position:relative;overflow:hidden;width:100%;height:460px;margin:50px 0 30px;box-shadow:0 1px 2px rgba(0,0,0,0.3);background-color:#000;}
+        #slide_4 .content{overflow:hidden;width:100%;height:100%;}
+        #slide_4 .content ul li{width:100%;height:460px;}
+        #slide_4 .content ul li a{overflow:hidden;display:block;width:100%;height:100%;text-indent:-9999px;}
+        #slide_4 .tag{position:absolute;left:0;bottom:0;width:100%;border-top:1px solid rgba(197,197,197,0.2);font-size:0;letter-spacing:-8px;text-align:center;filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#4C000000', endColorstr='#4C000000');}
+        :root #slide_4 .tag{filter:none;background-color:rgba(0,0,0,0.3);}
+        #slide_4 .tag ul{height:10px;padding:10px 10px;}
+        #slide_4 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:8px;height:8px;padding:0 5px;font-size:0;line-height:0;letter-spacing:normal;background:url(images/slide_nav_8.png) no-repeat center -24px;cursor:pointer;_padding:0;_margin:0 5px;_background:#F9FEFF;}
+        #slide_4 .tag li.current{background-position:center 0;_background:#177C7F;}
+        #slide_4 .pos{display:none;}
+        #slide_4 .btn{display:none;}
+
+
+        #slide_5{position:relative;overflow:hidden;width:100%;height:410px;margin:50px 0 30px;box-shadow:0 1px 3px rgba(0,0,0,0.3);;}
+        #slide_5 .content{overflow:hidden;width:100%;height:100%;}
+        #slide_5 .content ul li{width:100%;height:410px;}
+        #slide_5 .content ul li a{overflow:hidden;display:block;width:100%;height:100%;text-indent:-9999px;}
+        #slide_5 .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:center;}
+        #slide_5 .tag ul{height:10px;padding:10px 10px;}
+        #slide_5 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:40px;height:10px;margin:0 3px;font-size:0;line-height:0;letter-spacing:normal;background-color:#000;opacity:0.6;filter:alpha(opacity=50);cursor:pointer;}
+        #slide_5 .tag li.current{background-color:#f00;}
+        #slide_5 .btn a{position:absolute;left:50%;top:50%;width:40px;height:60px;margin-top:-50px;background:#000 url(images/slide_arrow7.png) no-repeat -187px center;opacity:0.3;filter:alpha(opacity=30);-webkit-transition:all .3s linear;transition:all .3s linear;cursor:pointer;outline:none;}
+        #slide_5 .btn a:hover{opacity:0.5;filter:alpha(opacity=50);}
+        #slide_5 .btn .btnPrev{margin-left:-490px;}
+        #slide_5 .btn .btnNext{margin-left:490px;background-position:-68px center;}
+        #slide_5 .pos{display:none;}
+    </style>
+</head>
+<body>
+<h1>slide切换：图片轮播-进阶效果</h1>
+<div id="slide_1" class="slide_1">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_1.jpg" alt="可爱的手机壁纸下载" />
+                    <span>可爱的手机壁纸下载(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_2.jpg" alt="清纯非主流美女高清壁纸" />
+                    <span>清纯非主流美女高清壁(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_3.jpg" alt="精选唯美风景手机壁纸" />
+                    <span>精选唯美风景手机壁纸(5张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_4.jpg" alt="最新热门美女写真高清壁纸" />
+                    <span>最新热门美女写真高清(7张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_5.jpg" alt="最新海贼王可爱动漫iPhone壁纸" />
+                    <span>最新海贼王可爱动漫i(8张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_6.jpg" alt="卡通Q版手机壁纸" />
+                    <span>卡通Q版手机壁纸(8张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_7.jpg" alt="经典动漫海贼王手机壁纸" />
+                    <span>经典动漫海贼王手机壁(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_8.jpg" alt="文艺范高清卡通壁纸" />
+                    <span>文艺范高清卡通壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_9.jpg" alt="小时代电影精美壁纸" />
+                    <span>小时代电影精美壁纸(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_10.jpg" alt="可爱杨幂高清手机壁纸" />
+                    <span>可爱杨幂高清手机壁纸(13张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_11.jpg" alt="可爱Q版海贼王one piece主题iPhone手机壁纸" />
+                    <span>可爱Q版海贼王one pi(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_12.jpg" alt="安卓手机高清壁纸推荐" />
+                    <span>安卓手机高清壁纸推荐(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_13.jpg" alt="潮人必备酷炫的美景壁纸" />
+                    <span>潮人必备酷炫的美景壁(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_14.jpg" alt="高清美女安卓手机壁纸" />
+                    <span>高清美女安卓手机壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_15.jpg" alt="非主流黑色背景文字手机壁纸" />
+                    <span>非主流黑色背景文字手(12张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_16.jpg" alt="阳光下的美女手机壁纸图集" />
+                    <span>阳光下的美女手机壁纸(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_17.jpg" alt="湖人高清手机壁纸下载" />
+                    <span>湖人高清手机壁纸下载(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_18.jpg" alt="温馨笑容的美女手机壁纸" />
+                    <span>温馨笑容的美女手机壁(17张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_19.jpg" alt="送给女孩的26个字母壁纸" />
+                    <span>送给女孩的26个字母壁(26张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_20.png" alt="修丢丢十二星座卡通手机壁纸" />
+                    <span>修丢丢十二星座卡通手(12张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_21.png" alt="三星Galaxy S4超漂亮全高清官方手机壁纸" />
+                    <span>三星Galaxy S4超漂亮(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_22.jpg" alt="Showgirl人气萌主周嘉琪iphone壁纸" />
+                    <span>Showgirl人气萌主周嘉(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_23.jpg" alt="唯美的氛围手机壁纸" />
+                    <span>唯美的氛围手机壁纸(11张)</span>
+                </a>
+            </li><!-- 
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_24.jpg" alt="阳光下的美景手机壁纸下载" />
+                    <span>懒人图库搜集整理</span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+        </ul>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_1").slide({ effect: "scrollx", auto: true });
+</pre>
+
+
+<hr />
+
+
+<div id="slide_1_2" class="slide_1">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_1.jpg" alt="可爱的手机壁纸下载" />
+                    <span>可爱的手机壁纸下载(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_2.jpg" alt="清纯非主流美女高清壁纸" />
+                    <span>清纯非主流美女高清壁(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_3.jpg" alt="精选唯美风景手机壁纸" />
+                    <span>精选唯美风景手机壁纸(5张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_4.jpg" alt="最新热门美女写真高清壁纸" />
+                    <span>最新热门美女写真高清(7张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_5.jpg" alt="最新海贼王可爱动漫iPhone壁纸" />
+                    <span>最新海贼王可爱动漫i(8张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_6.jpg" alt="卡通Q版手机壁纸" />
+                    <span>卡通Q版手机壁纸(8张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_7.jpg" alt="经典动漫海贼王手机壁纸" />
+                    <span>经典动漫海贼王手机壁(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_8.jpg" alt="文艺范高清卡通壁纸" />
+                    <span>文艺范高清卡通壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_9.jpg" alt="小时代电影精美壁纸" />
+                    <span>小时代电影精美壁纸(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_10.jpg" alt="可爱杨幂高清手机壁纸" />
+                    <span>可爱杨幂高清手机壁纸(13张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_11.jpg" alt="可爱Q版海贼王one piece主题iPhone手机壁纸" />
+                    <span>可爱Q版海贼王one pi(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_12.jpg" alt="安卓手机高清壁纸推荐" />
+                    <span>安卓手机高清壁纸推荐(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_13.jpg" alt="潮人必备酷炫的美景壁纸" />
+                    <span>潮人必备酷炫的美景壁(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_14.jpg" alt="高清美女安卓手机壁纸" />
+                    <span>高清美女安卓手机壁纸(11张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_15.jpg" alt="非主流黑色背景文字手机壁纸" />
+                    <span>非主流黑色背景文字手(12张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_16.jpg" alt="阳光下的美女手机壁纸图集" />
+                    <span>阳光下的美女手机壁纸(15张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_17.jpg" alt="湖人高清手机壁纸下载" />
+                    <span>湖人高清手机壁纸下载(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_18.jpg" alt="温馨笑容的美女手机壁纸" />
+                    <span>温馨笑容的美女手机壁(17张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_19.jpg" alt="送给女孩的26个字母壁纸" />
+                    <span>送给女孩的26个字母壁(26张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_20.png" alt="修丢丢十二星座卡通手机壁纸" />
+                    <span>修丢丢十二星座卡通手(12张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_21.png" alt="三星Galaxy S4超漂亮全高清官方手机壁纸" />
+                    <span>三星Galaxy S4超漂亮(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_22.jpg" alt="Showgirl人气萌主周嘉琪iphone壁纸" />
+                    <span>Showgirl人气萌主周嘉(10张)</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_23.jpg" alt="唯美的氛围手机壁纸" />
+                    <span>唯美的氛围手机壁纸(11张)</span>
+                </a>
+            </li><!-- 
+            <li>
+                <a href="#">
+                    <img src="images/slide_4_24.jpg" alt="阳光下的美景手机壁纸下载" />
+                    <span>懒人图库搜集整理</span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+        </ul>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_1_2").slide({ effect: "scrollx", auto: true, allowBlank: true, hoverDelay: 150 });
+</pre>
+
+
+<hr />
+
+
+<div id="slide_2">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/slide_5_1.jpg" alt="银魂剧场版" /></a></li>
+            <li><a href="#"><img src="images/slide_5_2.jpg" alt="石头门剧场版" /></a></li>
+            <li><a href="#"><img src="images/slide_5_3.jpg" alt="高达UC" /></a></li>
+            <li><a href="#"><img src="images/slide_5_4.jpg" alt="剑风传奇" /></a></li>
+            <li><a href="#"><img src="images/slide_5_5.jpg" alt="夏日大作战" /></a></li>
+            <li><a href="#"><img src="images/slide_5_6.jpg" alt="亡国的阿基德" /></a></li>
+            <li><a href="#"><img src="images/slide_5_7.jpg" alt="新EVA剧场版" /></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">
+                <a href="#">
+                    <img src="images/slide_5_1_thumb.jpg">
+                    <p class="name">银魂剧场版</p>
+                    <p class="shortcat">永远的万事屋</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_5_2_thumb.jpg">
+                    <p class="name">石头门剧场版</p>
+                    <p class="shortcat">负荷领域的既视感</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_5_3_thumb.jpg">
+                    <p class="name">高达UC</p>
+                    <p class="shortcat">Gundam Unicorn</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_5_4_thumb.jpg">
+                    <p class="name">剑风传奇</p>
+                    <p class="shortcat">黄金时代</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_5_5_thumb.jpg">
+                    <p class="name">夏日大作战</p>
+                    <p class="shortcat">Summer Wars</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_5_6_thumb.jpg">
+                    <p class="name">亡国的阿基德</p>
+                    <p class="shortcat">Code Geass</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_5_7_thumb.jpg">
+                    <p class="name">新EVA剧场版</p>
+                    <p class="shortcat">New Evangelion</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_2").slide({ effect: "scrollx", keepTags: true, auto: true });
+</pre>
+
+
+<hr />
+
+
+<div id="slide_3_outer">
+<div id="slide_3">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_1.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="警察故事2013">警察故事2013</a></h2>
+                            <span>(抢先版)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>成龙 刘烨 景甜 黄渤 张蓝心 王志飞 郑晓宁</span></p>
+                            <p>类型：<span>罪案 悬疑</span></p>
+                            <p>导演：<span>丁晟</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2013-12-28 13:38:07</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>《警察故事2013》是成龙经典制作“警察故事”系列最新作品。该片除续写“经典”以外，其内容与格局都是成龙电影前所未有的新尝试，是一个全新演绎的警察故事，一部崭新视角的警匪片。夜，繁华街区一座大型酒吧内，所有客人被劫持为人质。其中包括刑警钟文和女 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_2.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="私人订制">私人订制</a></h2>
+                            <span>(TS)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>葛优 李小璐 郑恺</span></p>
+                            <p>类型：<span>悬疑</span></p>
+                            <p>导演：<span>冯小刚</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2013-12-28 13:37:33</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>一个海归派与暴发户之间的矛盾冲突。主人公秦海原本是个社会底层的人，不过他通过发明专利发了一笔横财，为了改变自己的地位，他削尖了脑袋想往贵族圈子里钻。为了追求纯正贵族血统的女孩，秦海决定以每月20万的代价接受贵族训练，而训练他的则是一名满口理论 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_3.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="飞虎出征">飞虎出征</a></h2>
+                            <span>(BD国语中字)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>余文乐 杜汶泽 邹凯光 曾国祥</span></p>
+                            <p>类型：<span>生活</span></p>
+                            <p>导演：<span>麦咏麟</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2014-01-06 11:06:53</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>飞虎队是香港警方针对严重罪案，专门成立的精英部队。作為世界最优秀的机动部队之一，没有任何一次恐怖活动能躲避过它的制裁。 按照惯例，飞虎队会定期派遣部分成员，参加国际军事训练演习。然而，因為一次失败落选，其所属B队组员小强、阿富、虾米、家豪却因 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_4.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="雷神2 黑暗世界">雷神2 黑暗世界</a></h2>
+                            <span>(DVD版)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>克里斯·海姆斯沃斯 汤姆·希德勒斯顿 娜塔丽·波特曼</span></p>
+                            <p>类型：<span>冒险 魔幻</span></p>
+                            <p>导演：<span>丹尼尔·米汗</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2013-12-04 00:21:38</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>在新的一集中，雷神还是要面对强大的黑暗的对手的挑战，他要不断地战斗，来保护九大国度和地球的安全。可是托尔所面对的对手过于强大，奥丁和阿斯卡德都无法招架。迫于要保全家国的想法，托尔只有一个人独自踏上了最危险也是最孤独的寻求解决之道的旅程。在影 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_5.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="狄仁杰之神都龙王">狄仁杰之神都龙王</a></h2>
+                            <span>(BD1280蓝光超清)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>刘嘉玲 赵又廷 Angelababy 冯绍峰 林更新 金范</span></p>
+                            <p>类型：<span>历史 古装 悬疑</span></p>
+                            <p>导演：<span>徐克</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2013-12-23 16:34:31</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>由徐克导演，华谊筹拍的新片《狄仁杰之神都龙王》（又名《狄仁杰前传》），讲述21岁的少年狄仁杰（赵又廷饰演）前往大理寺报到任职时，卷入水怪劫掳案，睿姬（Angelababy饰演）昔日情郎元祯（金范饰演）成了破案的关键；狄仁杰协同沙陀忠（林更新饰演）、尉迟 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_6.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="特殊身份">特殊身份</a></h2>
+                            <span>(BD1280高清国语)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>甄子丹 景甜 张涵予 安志杰</span></p>
+                            <p>类型：<span>罪案</span></p>
+                            <p>导演：<span>霍耀良</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2013-12-24 16:55:13</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>制片方此前为这部年度动作大片准备了多个名字，但直到发布会前不久才最终确定片名为《特殊身份》，对此片方表示，是因为这个名字最符合影片的神秘气质。为了能够呈现出最佳的视听效果，《特殊身份》邀请到了曾拍摄过多部经典动作戏的香港知名导演霍耀良、奥斯 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_7.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="全民目击">全民目击</a></h2>
+                            <span>(BD)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>郭富城 孙红雷 余男 邓家佳 赵立新</span></p>
+                            <p>类型：<span>悬疑</span></p>
+                            <p>导演：<span>未知</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2013-12-23 16:34:25</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>《全民目击》讲述的是富豪林泰与明星杨丹陷入情网，不料在结婚前夕，他的宝贝女儿林萌萌与杨丹发生矛盾并过失杀死了杨丹。在血浓於水的情感与严谨的法律之间，这个为了救女费尽心机的父亲与律师周莉和检察官童涛之间发生了精彩交锋…… 幕后制作 电影《全民目 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_8.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="金蝉脱壳">金蝉脱壳</a></h2>
+                            <span>(BD1280高清)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>阿诺·施瓦辛格 西尔维斯特·史泰龙 詹姆斯·卡维泽</span></p>
+                            <p>类型：<span>悬疑 惊悚</span></p>
+                            <p>导演：<span>米凯尔·哈弗斯特罗姆</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2014-01-09 10:47:41</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>史泰龙饰演的雷是个监狱设计师，原计划测试世界上最坚不可摧的监狱，不料却被关入狱中企图灭口。为了复仇，雷必须想办法逃出这座全透明无隐私的高压监狱。而阿诺则饰演一位亦正亦邪的囚犯大佬，他与雷强强联手，在防止监狱暴动的情况下共同越狱。 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="panel">
+                    <a class="img" href="#"><img src="images/slide_movie/pic_9.jpg" /></a>
+                    <div class="intro">
+                        <div class="title">
+                            <h2><a target="_blank" href="#" title="地球引力">地球引力</a></h2>
+                            <span>(BD)</span>
+                        </div>
+                        <div class="info">
+                            <p class="long"><label>主演：</label><span>乔治·克鲁尼 桑德拉·布洛克</span></p>
+                            <p>类型：<span>惊悚</span></p>
+                            <p>导演：<span>阿方索·卡隆</span></p>
+                            <p>年份：<span>2013</span></p>
+                            <p>时间：<span>2014-01-07 12:53:36</span></p>
+                        </div>
+                        <p class="desc">剧情：<span>《地球引力》是一部太空科幻惊悚片，由《人类之子》（Children of Men）导演阿方索·夸隆（Alfonso Cuarón）执导，影片的剧本由夸隆和他28岁的儿子乔纳斯（Jonás）共同创作。 《地球引力》将由阿方索·夸隆的老搭档、《哈利波特》懒人图库 ...</span></p>
+                        <a class="play" href="#" target="_blank">立即观看</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">
+                <a href="#">
+                    <img src="images/slide_movie/pic_1_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_2_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_3_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_4_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_5_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_6_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_7_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_8_small.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/slide_movie/pic_9_small.jpg" alt="" />
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_3").slide({ trigger: "click", effect: "fade", keepTags: true, auto: true });
+</pre>
+
+
+<hr />
+
+
+<div id="slide_4">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#" style="background:#194982 url(images/slide_7_1.jpg) no-repeat center 0;">描述内容1</a></li>
+            <li><a href="#" style="background:#15181E url(images/slide_7_2.jpg) no-repeat center 0;">描述内容2</a></li>
+            <li><a href="#" style="background:#0B0B0B url(images/slide_7_3.jpg) no-repeat center 0;">描述内容3</a></li>
+            <li><a href="#" style="background:#000000 url(images/slide_7_4.jpg) no-repeat center 0;">描述内容4</a></li>
+            <li><a href="#" style="background:#04304B url(images/slide_7_5.jpg) no-repeat center 0;">描述内容5</a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_4").slide({ effect: "fadeIn", auto: true, hoverDelay: 150, easing: "jswing" });
+</pre>
+
+
+<hr />
+
+
+<div id="slide_5">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#" style="background:#E2015F url(images/slide_8_1.jpg) no-repeat center 0;">描述内容1</a></li>
+            <li><a href="#" style="background:#DED4A1 url(images/slide_8_2.jpg) no-repeat center 0;">描述内容2</a></li>
+            <li><a href="#" style="background:#BACFD4 url(images/slide_8_3.jpg) no-repeat center 0;">描述内容3</a></li>
+            <li><a href="#" style="background:#98908E url(images/slide_8_4.jpg) no-repeat center 0;">描述内容4</a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCodeNum">
+$("#slide_5").slide({ trigger: "click", effect: "scrollx", auto: true, seamless: true, duration: 600, easing: "easeOutCirc" });
+</pre>
+<script>
+    jQuery(function($)
+    {
+        $("#slide_1").slide({ effect: "scrollx", auto: true });
+        $("#slide_1_2").slide({ effect: "scrollx", auto: true, allowBlank: true, hoverDelay: 150 });
+
+        $("#slide_2").slide({ effect: "scrollx", keepTags: true, auto: true });
+        $("#slide_3").slide({ trigger: "click", effect: "fade", keepTags: true, auto: true });
+
+        $("#slide_4").slide({ effect: "fadeIn", auto: true, hoverDelay: 150, easing: "jswing" });
+        $("#slide_5").slide({ trigger: "click", effect: "scrollx", auto: true, seamless: true, duration: 600, easing: "easeOutCirc" });
+
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

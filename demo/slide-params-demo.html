@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片轮播-参数演示</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+
+        #slideDemo{position:relative;width:800px;height:280px;}
+        #slideDemo .content{overflow:hidden;width:100%;height:100%;}
+        #slideDemo .content ul li{width:800px;height:280px;}
+        #slideDemo .content ul li a{display:block;width:100%;height:100%;}
+        #slideDemo .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:right;filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F000000', endColorstr='#7F000000');}
+        :root #slideDemo .tag{filter:none;background-color:rgba(0,0,0,0.5);}
+        #slideDemo .tag ul{height:10px;padding:5px 10px;}
+        #slideDemo .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:25px;height:10px;margin:0 3px;font-size:0;line-height:0;letter-spacing:normal;background-color:#fff;opacity:0.4;filter:alpha(opacity=40);cursor:pointer;}
+        #slideDemo .tag li.current{opacity:1;filter:alpha(opacity=100);}
+        #slideDemo .pos{position:absolute;left:10px;bottom:0;height:20px;line-height:20px;color:#fff;}
+        #slideDemo .btn a{position:absolute;top:50%;width:45px;height:100px;margin-top:-50px;background:url(images/slide_arrow2.png) no-repeat 0 0;opacity:0.2;filter:alpha(opacity=20);-webkit-transition:all .3s linear;transition:all .3s linear;cursor:pointer;outline:none;}
+        #slideDemo .btn a:hover{opacity:0.5;filter:alpha(opacity=50);}
+        #slideDemo .btn a.disabled{opacity:0.1;filter:alpha(opacity=10);}
+        #slideDemo .btn .btnPrev{left:0;}
+        #slideDemo .btn .btnNext{right:0;background-position:right top;}
+    </style>
+</head>
+<body>
+<div id="slideDemo">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li><a href="#"><img src="images/slide_2_1.jpg" alt="品牌特卖会全场1折起" /></a></li>
+            <li><a href="#"><img src="images/slide_2_2.jpg" alt="年中清仓1-3折全场包邮" /></a></li>
+            <li><a href="#"><img src="images/slide_2_3.jpg" alt="潮机大放假 精选潮机5折起" /></a></li>
+            <li><a href="#"><img src="images/slide_2_4.jpg" alt="好锅汇美食更健康" /></a></li>
+            <li><a href="#"><img src="images/slide_2_5.jpg" alt="千姿百态花裙 百款新品 免费试穿" /></a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+    <div class="pos">
+        <span class="pos-cur j_slideCur">1</span><span class="pos-line">/</span><span class="pos-pages j_slidePages">5</span>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<script>
+    jQuery(function($){
+
+        var search = location.search,
+            trigger = getSearch("trigger") || "mouseenter",
+            tagClass = getSearch("tagClass") || "current",
+            btnClass = getSearch("btnClass") || "disabled",
+            effect = getSearch("effect") || "none",
+            duration = parseInt(getSearch("duration") || "400"),
+            easing = getSearch("easing") || "swing",
+            auto = getSearch("auto") === "true" ? true : false,
+            interval = parseInt(getSearch("interval") || "5000"),
+            scrollLen = parseInt(getSearch("scrollLen") || "0"),
+            cur = parseInt(getSearch("cur") || "0"),
+            keepTags = getSearch("keepTags") === "true" ? true : false,
+            btnDisable = getSearch("btnDisable") === "true" ? true : false,
+            hoverDelay = parseInt(getSearch("hoverDelay") || "50"),
+            seamless = getSearch("seamless") === "true" ? true : false,
+            beLock = getSearch("beLock") === "true" ? true : false;
+
+        $("#slideDemo").slide({ tagClass: tagClass, trigger: trigger, effect: effect, duration: duration, easing: easing, auto: auto, interval: interval, scrollLen: scrollLen, cur: cur, keepTags: keepTags, btnDisable: btnDisable, btnClass: btnClass, hoverDelay: hoverDelay, seamless: seamless, beLock: beLock });
+
+        //获取参数值
+        function getSearch(name)
+        {
+            var reg = new RegExp("(?:\\?|&)" + name + "=([^&]*)").exec(location.search);
+            return reg === null ? "" : reg[1];
+        }
+    });
+</script>
+</body>
+</html>

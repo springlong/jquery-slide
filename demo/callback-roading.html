@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：回调函数-进度条切换效果</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery-easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+        #slideCallback{overflow:hidden;width:800px;height:364px;margin-left:20px;}
+        #slideCallback .content{position:relative;float:left;overflow:hidden;width:619px;}
+        #slideCallback .contentInner{height:364px;}
+        #slideCallback .content a{display:block;width:100%;height:100%;}
+        #slideCallback .content a img{display:block;width:100%;height:100%;vertical-align:baseline;}
+        #slideCallback .tag{float:left;width:180px;height:366px;}
+        #slideCallback .tag .feature{position:relative;width:180px;height:91px;}
+        #slideCallback .tag .feature a{display:block;width:100%;height:100%;text-decoration:none;opacity:0.4;filter:alpha(opacity=40);}
+        #slideCallback .tag .azure a{background-color:#49b8da;}
+        #slideCallback .tag .brick a{background-color:#A83513;}
+        #slideCallback .tag .gray a{background-color:#646464;}
+        #slideCallback .tag .green a{background-color:#85bb23;}
+        #slideCallback .tag .current a,#slideCallback .tag .feature a:hover{opacity:1;filter:alpha(opacity=100);}
+        #slideCallback .tag .feature img{position:absolute;left:18px;top:18px;width:56px;height:57px;}
+        #slideCallback .tag .feature span{position:absolute;left:92px;top:32px;width:70px;font-size:15px;text-align:left;color:#fff;}
+        #slideCallback .tag .feature .timerline{position:absolute;left:0;bottom:0;display:none;width:180px;height:7px;}
+        #slideCallback .tag .feature .dark-green{background-color:#308900;}
+        #slideCallback .tag .feature .dark-azure{background-color:#0088C4;}
+        #slideCallback .tag .feature .dark-brick{background-color:#6F0B01;}
+        #slideCallback .tag .feature .dark-gray{background-color:#272727;}
+    </style>
+</head>
+<body>
+<h1>slide切换：回调函数-进度条切换效果</h1>
+<div id="slideCallback">                
+    <div class="content">
+        <div class="contentInner j_slideLists">
+            <a href="#"><img src="images/slideWithLoading/pic_1.jpg"></a>   
+            <a href="#"><img src="images/slideWithLoading/pic_4.jpg"></a>
+            <a href="#"><img src="images/slideWithLoading/pic_3.jpg"></a>
+            <a href="#"><img src="images/slideWithLoading/pic_2.jpg"></a>
+        </div>
+    </div>
+    <div class="tag j_slideTags">
+        <div class="feature green current">
+            <a href="#">
+                <img src="images/slideWithLoading/tag_1.png">
+                <span>Acer 文件</span>
+                <div class="timerline dark-green"></div>
+            </a>
+        </div>
+        <div class="feature azure">
+            <a href="#">
+                <img src="images/slideWithLoading/tag_2.png">
+                <span>Acer 远程文件</span>
+                <div class="timerline dark-azure"></div>
+            </a>                
+        </div>           
+        <div class="feature brick">
+            <a href="#">
+                <img src="images/slideWithLoading/tag_3.png">
+                <span>Acer 照片</span>
+                <div class="timerline dark-brick"></div>
+            </a>
+        </div>           
+        <div class="feature gray">
+            <a href="#">
+                <img src="images/slideWithLoading/tag_4.png">
+                <span>Acer 多媒体</span>
+                <div class="timerline dark-gray"></div>
+            </a>
+        </div>           
+    </div>
+</div>
+<pre class="jsCodeNum autoHeight">
+$("#slideCallback").slide({ effect: "fade", trigger: "click", auto: true, keepTags: true }, function(cur, old){
+
+    //获取操作对象
+    var delay = 500,
+        cfg = this.cfg,
+        $tags = this.tags,
+        $oldTag = $tags.eq(old),
+        $curTag = $tags.eq(cur),
+        $timerline = $curTag.find(".timerline");
+
+    //让上一个进度条停止操作并隐藏
+    clearTimeout($oldTag.find(".timerline").stop().hide().end().data("timerID"));
+
+    //当前项的进度条延时运动
+    $curTag.data("timerID", setTimeout(function(){
+        $timerline.width(0).show().stop().animate({ width: $timerline.parent().width() }, cfg.interval - delay); // 切换间隔 - 延时
+    }, cfg.duration + delay)); // 动画时间 + 延时
+});
+</pre>
+<script>
+    jQuery(function($)
+    {
+        $("#slideCallback").slide({ effect: "fade", trigger: "click", auto: true, keepTags: true }, function(cur, old){
+
+            //获取操作对象
+            var delay = 500,
+                cfg = this.cfg,
+                $tags = this.tags,
+                $oldTag = $tags.eq(old),
+                $curTag = $tags.eq(cur),
+                $timerline = $curTag.find(".timerline");
+
+            //让上一个进度条停止操作并隐藏
+            clearTimeout($oldTag.find(".timerline").stop().hide().end().data("timerID"));
+
+            //当前项的进度条延时运动
+            $curTag.data("timerID", setTimeout(function(){
+                $timerline.width(0).show().stop().animate({ width: $timerline.parent().width() }, cfg.interval - delay); // 切换间隔 - 延时
+            }, cfg.duration + delay)); // 动画时间 + 延时
+        });
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>

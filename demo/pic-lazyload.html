@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>slide切换：图片懒加载</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/codeView.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.snippet.min.js"></script>
+    <script src="../jquery.slide.js"></script>
+    <style>
+        *{padding:0;margin:0;}
+        body{padding:0 0 100px;}
+        h1{margin:30px 0;font-size:26px;text-align:center;}
+        h2{margin:50px 0 20px 20px;font-size:18px;}
+        p{font-size:14px;margin-left:20px;}
+        hr{margin:50px 0;}
+
+        .snippet-container{margin:0 20px;}
+
+        #lazyload_1{position:relative;width:600px;height:300px;margin:50px 0 30px 20px;}
+        #lazyload_1 .content{position:relative;overflow:hidden;width:100%;height:100%;}
+        #lazyload_1 .content ul li{position:relative;width:600px;height:300px;}
+        #lazyload_1 .content ul li a{display:block;width:600px;height:300px;}
+        #lazyload_1 .content ul li a img{display:block;width:100%;height:100%;background:url(images/loading.gif) no-repeat center center;}
+        #lazyload_1 .content ul li .text{position:absolute;left:0;bottom:0;z-index:2;width:350px;height:30px;font-size:13px;line-height:30px;font-family:Verdana;text-indent:6px;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;/**width:100%;*filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F08355C', endColorstr='#7F08355C');*/}
+        #lazyload_1 .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:right;filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F08355C', endColorstr='#7F08355C');/**filter:none;*/}
+        :root #lazyload_1 .tag{filter:none;background-color:rgba(8,53,92,0.5);}
+        #lazyload_1 .tag ul{*zoom:1;padding:4px 10px;opacity:0.7;filter:alpha(opacity=70);}
+        #lazyload_1 .tag li{display:inline-block;*zoom:1;*display:inline;width:18px;height:18px;border:1px solid #ccc;margin-left:3px;font-size:12px;line-height:18px;font-family:Verdana;letter-spacing:normal;text-align:center;color:#000;background-color:#fff;cursor:pointer;}
+        #lazyload_1 .tag li.current{border-color:#1188C0;color:#fff;background-color:#1072AA;}
+        #lazyload_1 .pos{display:none;}
+        #lazyload_1 .btn a{position:absolute;top:50%;width:40px;height:50px;margin-top:-30px;background:#000 url(images/slide_arrow7.png) no-repeat -187px center;opacity:0.3;filter:alpha(opacity=30);-webkit-transition:all .3s linear;transition:all .3s linear;cursor:pointer;outline:none;}
+        #lazyload_1 .btn a:hover{opacity:0.5;filter:alpha(opacity=50);}
+        #lazyload_1 .btn .btnPrev{left:0;}
+        #lazyload_1 .btn .btnNext{right:0;background-position:-68px center;}
+
+
+        #lazyload_2{position:relative;width:950px;padding:10px 30px;margin:50px 0 20px 20px;border:1px solid #e9e9e9;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+        #lazyload_2 .content{overflow:hidden;width:100%;height:350px;}
+        #lazyload_2 .content ul{zoom:1;margin-left:-10px;}
+        #lazyload_2 .content li{float:left;display:inline;width:230px;height:350px;padding-left:10px;}
+        #lazyload_2 .content li a{display:block;width:100%;height:100%;text-decoration:none;}
+        #lazyload_2 .content li a img{display:block;height:100px;width:100%;height:100%;vertical-align:baseline;background:url(images/loading.gif) no-repeat center center;}
+        #lazyload_2 .btn a{position:absolute;top:50%;width:24px;height:43px;margin-top:-25px;background:url(images/slide_arrow3_prev.png) no-repeat 0 0;cursor:pointer;outline:none;}
+        #lazyload_2 .btn .btnPrev{left:0;}
+        #lazyload_2 .btn .btnNext{right:0;background:url(images/slide_arrow3_next.png) no-repeat 0 0;}
+
+
+        #lazyload_3{position:relative;overflow:hidden;width:100%;height:410px;margin:50px 0 30px;box-shadow:0 1px 3px rgba(0,0,0,0.3);;}
+        #lazyload_3 .content{overflow:hidden;width:100%;height:100%;}
+        #lazyload_3 .content ul{width:100%;}
+        #lazyload_3 .content ul li{width:100%;height:410px;background:url(images/loading.gif) no-repeat center center;}
+        #lazyload_3 .content ul li a{overflow:hidden;display:block;width:100%;height:100%;text-indent:-9999px;background:no-repeat center 0;}
+        #lazyload_3 .tag{position:absolute;left:0;bottom:0;width:100%;font-size:0;letter-spacing:-8px;text-align:center;}
+        #lazyload_3 .tag ul{height:10px;padding:10px 10px;}
+        #lazyload_3 .tag li{display:inline-block;*zoom:1;*display:inline;overflow:hidden;width:40px;height:10px;margin:0 3px;font-size:0;line-height:0;letter-spacing:normal;background-color:#000;opacity:0.6;filter:alpha(opacity=50);cursor:pointer;}
+        #lazyload_3 .tag li.current{background-color:#f00;}
+        #lazyload_3 .btn a{position:absolute;left:50%;top:50%;width:40px;height:60px;margin-top:-50px;background:#000 url(images/slide_arrow7.png) no-repeat -187px center;opacity:0.3;filter:alpha(opacity=30);-webkit-transition:all .3s linear;transition:all .3s linear;cursor:pointer;outline:none;}
+        #lazyload_3 .btn a:hover{opacity:0.5;filter:alpha(opacity=50);}
+        #lazyload_3 .btn .btnPrev{margin-left:-490px;}
+        #lazyload_3 .btn .btnNext{margin-left:490px;background-position:-68px center;}
+        #lazyload_3 .pos{display:none;}
+    </style>
+</head>
+<body>
+<h1>slide切换：懒加载</h1>
+<h2>1、幻灯片前景图懒加载</h2>
+<div id="lazyload_1" class="slide">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#"><img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/slide-1.jpg" alt="" /></a>
+                <span class="text">这是标题1</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/slide-2.jpg" alt="" /></a>
+                <span class="text">这是标题2</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/slide-3.jpg" alt="" /></a>
+                <span class="text">这是标题3</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/slide-4.jpg" alt="" /></a>
+                <span class="text">这是标题4</span>
+            </li>
+            <li>
+                <a href="#"><img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/slide-5.jpg" alt="" /></a>
+                <span class="text">这是标题5</span>
+            </li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCode">
+$("#lazyload_1").slide({ effect: "scrollx", seamless: true, lazyload: true });
+</pre>
+<h2>2、平滑滚动前景图懒加载</h2>
+<div id="lazyload_2">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-1.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-2.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-3.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-4.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-5.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-6.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-7.jpg" alt="" />
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/default.png" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/marquee-8.jpg" alt="" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCode">
+$("#lazyload_2").slide({ scrollLen: 1, effect: "scrollx", seamless: true, lazyload: true });
+</pre>
+<h2>3、幻灯片背景图懒加载</h2>
+<div id="lazyload_3" class="slide">
+    <div class="content">
+        <ul class="j_slideLists">
+            <li style="background-color:#E2015F;"><a href="#" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/bg-1.jpg">描述内容1</a></li>
+            <li style="background-color:#DED4A1;"><a href="#" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/bg-2.jpg">描述内容2</a></li>
+            <li style="background-color:#BACFD4;"><a href="#" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/bg-3.jpg">描述内容3</a></li>
+            <li style="background-color:#98908E;"><a href="#" data-slide-img="http://demo.fedlife.cn/jquery/jquery-slide/images/lazyload/bg-4.jpg">描述内容4</a></li>
+        </ul>
+    </div>
+    <div class="tag">
+        <ul class="j_slideTags">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="javascript:void(0);" target="_self" class="btnPrev j_slidePrev"></a>
+        <a href="javascript:void(0);" target="_self" class="btnNext j_slideNext"></a>
+    </div>
+</div>
+<pre class="jsCode">
+$("#lazyload_3").slide({ trigger: "click", effect: "fade", lazyload: true });
+</pre>
+<script>
+    jQuery(function($)
+    {   
+        $("#lazyload_1").slide({ effect: "scrollx", seamless: true, lazyload: true });
+
+        $("#lazyload_2").slide({ scrollLen: 1, effect: "scrollx", seamless: true, lazyload: true });
+
+        $("#lazyload_3").slide({ trigger: "click", effect: "fade", lazyload: true });
+
+
+        //代码着色
+        $("pre.jsCode").snippet("javascript", {style: "custom_js", showNum: false});
+        $("pre.jsCodeNum").snippet("javascript", {style: "custom_js"});
+    });
+</script>
+</body>
+</html>
