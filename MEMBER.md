@@ -59,7 +59,7 @@
 
 `Slider` 默认的配置选项与实例化时传递进来的配置参数进行合并后的结果。
 
-关于 `Slider` 默认的配置选项，大家可以参见：[#1](/issues/1)。
+关于 `Slider` 默认的配置选项，大家可以参见：[#1](https://github.com/springlong/jquery-slide/issues/1)。
 
 为了减少轮播图效果的内存占用，并不是所有的默认选项都会被合并到 `oSlide.cfg` 中。每次的合并操作都是将 `Slider.config` 对象与配置参数进行合并，而该对象的值如下所示（那些用于内部操作，或者默认值为 0 或 false 的参数将被注释）：
 
