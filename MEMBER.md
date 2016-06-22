@@ -183,8 +183,8 @@ oSlide.init(function(cur, old, action){
 
 查看使用场景：
 
-1. [回调函数-标签项的滑动处理](http://demo.fedlife.cn/jquery/jquery-slide/callback-tag-slide.html)
-2. [效果定制-实现内容项的动画效果](http://demo.fedlife.cn/jquery/jquery-slide/custom-cont-flash.html)
+1. [回调函数-标签项的滑动处理](http://www.fedlife.cn/demo/jquery/jquery-slide/callback-tag-slide.html)
+2. [效果定制-实现内容项的动画效果](http://www.fedlife.cn/demo/jquery/jquery-slide/custom-cont-flash.html)
 
 
 ### 4. `oSlide.unlock()`

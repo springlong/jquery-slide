@@ -162,9 +162,15 @@ function doSwitch(oSlide)
 
         oSlide.init(function(cur, old, action){
 
+            // 老版做法
+            // var duration = action === "must" ? 0 : cfg.duration;
+            // $lists.eq(old).stop(true, true).fadeOut(duration, easing);
+            // $lists.eq(cur).fadeIn(duration, easing, done);
+
+            // 新版做法
             var duration = action === "must" ? 0 : cfg.duration;
-            $lists.eq(old).stop(true, true).fadeOut(duration, easing);
-            $lists.eq(cur).fadeIn(duration, easing, done);
+            $lists.eq(old).stop(true, true).css('z-index', 0).fadeOut(duration, easing, done);
+            $lists.eq(cur).css('z-index', -1).show();
         });
     }
     // 淡入效果
@@ -272,8 +278,8 @@ Slider.prototype = {
             cansee, cols, rows, pages;
 
         // 计算可视内容项的情况
-        cols = Math.round($wrap.width() / $lists.outerWidth(true));
-        rows = Math.round($wrap.height() / $lists.outerHeight(true));
+        cols = Math.round($wrap.width() / $lists.outerWidth(true)) || 1;
+        rows = Math.round($wrap.height() / $lists.outerHeight(true)) || 1;
         cansee = cols * rows;
         scrollLen = cfg.scrollLen ? scrollLen : cansee;
         pages = Math.ceil((amount - (cansee - scrollLen)) / scrollLen);

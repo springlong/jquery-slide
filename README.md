@@ -20,17 +20,17 @@
 
 在正式介绍这款插件的使用和相关组成前，建议大家点击下述链接体验下这款插件的使用情况：
 
-1. [图片轮播-基础效果](http://demo.fedlife.cn/jquery/jquery-slide/slide-base.html)
-2. [图片轮播-进阶效果](http://demo.fedlife.cn/jquery/jquery-slide/slide-up.html)
-3. [图片轮播-横屏三列](http://demo.fedlife.cn/jquery/jquery-slide/slide-cols.html)
-4. [图片轮播-参数演示](http://demo.fedlife.cn/jquery/jquery-slide/slide-params.html)
-5. [图片滚动](http://demo.fedlife.cn/jquery/jquery-slide/pic-roll.html)
-6. [图片懒加载](http://demo.fedlife.cn/jquery/jquery-slide/pic-lazyload.html)
-7. [回调函数-进度条切换效果](http://demo.fedlife.cn/jquery/jquery-slide/callback-roading.html)
-8. [回调函数-内容项的动画效果](http://demo.fedlife.cn/jquery/jquery-slide/callback-cont-flash.html)
-9. [回调函数-标签项的滑动处理](http://demo.fedlife.cn/jquery/jquery-slide/callback-tag-slide.html)
-10. [效果定制-实现内容列表的渐进式淡入效果](http://demo.fedlife.cn/jquery/jquery-slide/custom-progressive.html)
-11. [效果定制-实现内容项的动画效果](http://demo.fedlife.cn/jquery/jquery-slide/custom-cont-flash.html)
+1. [图片轮播-基础效果](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-base.html)
+2. [图片轮播-进阶效果](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-up.html)
+3. [图片轮播-横屏三列](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-cols.html)
+4. [图片轮播-参数演示](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-params.html)
+5. [图片滚动](http://www.fedlife.cn/demo/jquery/jquery-slide/pic-roll.html)
+6. [图片懒加载](http://www.fedlife.cn/demo/jquery/jquery-slide/pic-lazyload.html)
+7. [回调函数-进度条切换效果](http://www.fedlife.cn/demo/jquery/jquery-slide/callback-roading.html)
+8. [回调函数-内容项的动画效果](http://www.fedlife.cn/demo/jquery/jquery-slide/callback-cont-flash.html)
+9. [回调函数-标签项的滑动处理](http://www.fedlife.cn/demo/jquery/jquery-slide/callback-tag-slide.html)
+10. [效果定制-实现内容列表的渐进式淡入效果](http://www.fedlife.cn/demo/jquery/jquery-slide/custom-progressive.html)
+11. [效果定制-实现内容项的动画效果](http://www.fedlife.cn/demo/jquery/jquery-slide/custom-cont-flash.html)
 
 
 ## `new Slider()` 构造函数
@@ -148,23 +148,23 @@ $('#slideTest').slide({ trigger: 'click', keepTags: true }, function(cur, old, a
 
 **缓动算法（easing）**
 
-jQuery 默认只提供了 `linear` 和 `swing` 两种缓动算法，为了获得更多的效果体验，建议大家配合使用 [jQuery Easing](https://github.com/springlong/jquery-easing) 插件来满足项目的多种需求。你可以点击 [这里](http://demo.fedlife.cn/jquery/jquery-easing/demo.html) 查看应用缓动算法插件之后的效果预览。
+jQuery 默认只提供了 `linear` 和 `swing` 两种缓动算法，为了获得更多的效果体验，建议大家配合使用 [jQuery Easing](https://github.com/springlong/jquery-easing) 插件来满足项目的多种需求。你可以点击 [这里](http://www.fedlife.cn/demo/jquery/jquery-easing/demo.html) 查看应用缓动算法插件之后的效果预览。
 
 **无缝结构（seamless）**
 
-设置该参数为 `true`，用来实现图片轮播首尾切换时无缝切换。具体效果请参见 图片轮播-基础效果 中的 [案例五](http://demo.fedlife.cn/jquery/jquery-slide/slide-up.html#slide_5)。
+设置该参数为 `true`，用来实现图片轮播首尾切换时无缝切换。具体效果请参见 图片轮播-基础效果 中的 [案例五](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-up.html#slide_5)。
 
 **末尾允许留白（allowBlank）**
 
-该参数用于在无缝结构下设置最后一页是否允许留白。具体效果请参见中的 图片轮播-基础效果 中案例一的[两个demo](http://demo.fedlife.cn/jquery/jquery-slide/slide-up.html) 。
+该参数用于在无缝结构下设置最后一页是否允许留白。具体效果请参见中的 图片轮播-基础效果 中案例一的[两个demo](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-up.html) 。
 
 **窗口调整（doResize）**
 
-该参数通常用于全屏的或者宽度自适应的图片轮播，用来当浏览器窗口的大小被调整时，重置每一页轮播图的宽度，并重新调整到正确的位置。具体效果请参见 图片轮播-基础效果 中的 [案例五](http://demo.fedlife.cn/jquery/jquery-slide/slide-up.html#slide_5) 。
+该参数通常用于全屏的或者宽度自适应的图片轮播，用来当浏览器窗口的大小被调整时，重置每一页轮播图的宽度，并重新调整到正确的位置。具体效果请参见 图片轮播-基础效果 中的 [案例五](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-up.html#slide_5) 。
 
 **参数演示**
 
-为了让大家能够更好的预览 `.slide()` 扩展函数的配置选项，我们特别提供了 [图片轮播-参数演示](http://demo.fedlife.cn/jquery/jquery-slide/slide-params.html) 的预览页面。大家可以对不同的参数选择不同的值，来预览对应的表现效果。
+为了让大家能够更好的预览 `.slide()` 扩展函数的配置选项，我们特别提供了 [图片轮播-参数演示](http://www.fedlife.cn/demo/jquery/jquery-slide/slide-params.html) 的预览页面。大家可以对不同的参数选择不同的值，来预览对应的表现效果。
 
 
 ## 使用说明
