@@ -3,6 +3,7 @@
  * @version     1.0.0
  * @author      龙泉 <yangtuan2009@126.com>
  */
+
 (function(window, $, undefined){
 
 /**
@@ -24,7 +25,10 @@ $.fn.slide = function(config, callback)
 
         var oSlide = new Slider(ele, config, callback);
 
-        oSlide.cfg.effect.indexOf("scroll") >= 0 ? doSlide(oSlide) : doSwitch(oSlide);
+        if(oSlide.valid) {
+
+            oSlide.cfg.effect.indexOf("scroll") >= 0 ? doSlide(oSlide) : doSwitch(oSlide);
+        }
 
         // window.console && console.info(oSlide);
     });
@@ -162,15 +166,9 @@ function doSwitch(oSlide)
 
         oSlide.init(function(cur, old, action){
 
-            // 老版做法
-            // var duration = action === "must" ? 0 : cfg.duration;
-            // $lists.eq(old).stop(true, true).fadeOut(duration, easing);
-            // $lists.eq(cur).fadeIn(duration, easing, done);
-
-            // 新版做法
             var duration = action === "must" ? 0 : cfg.duration;
-            $lists.eq(old).stop(true, true).css('z-index', 0).fadeOut(duration, easing, done);
-            $lists.eq(cur).css('z-index', -1).show();
+            $lists.eq(old).stop(true, true).css('z-index', 1).fadeOut(duration, easing, done);
+            $lists.eq(cur).css('z-index', 0).show();
         });
     }
     // 淡入效果
@@ -213,16 +211,16 @@ function doSwitch(oSlide)
  * @param  {number}  [config.duration]  切换效果的持续时间，默认值：400（毫秒）
  * @param  {number}  [config.interval]  自动切换时的时间间隔，默认值：5000（毫秒）
  * @param  {number}  [config.hoverDelay] 鼠标悬浮切换时，分页标签的响应延迟时间，默认值：0（毫秒）
- * 
+ *
  * @param  {number}  [config.cur]       默认显示的内容项的索引，默认值：0
  * @param  {number}  [config.scrollLen] 每次切换将滚动的单位长度，默认值：0，表示可视区域的所有列（横向）或所有行（纵向）。
- * 
+ *
  * @param  {boolean} [config.keepTags]  是否保留分页标签的原始内容，默认值：false（分页标签项将由程序自动生成）
  * @param  {boolean} [config.btnDisable] 是否设置在首页时禁用上一页按钮切换，在尾页时禁用下一页按钮切换，默认值：false
  * @param  {boolean} [config.auto]      是否执行自动切换，默认值：false
  * @param  {boolean} [config.lazyload]  是否启用图片的懒加载功能，默认值：false
- * @param  {boolean} [config.beLock]    当处于轮播的运动状态时，是否将当前轮播置为锁定状态（按钮点击将不会触发切换，但分页标签可以），默认值：false 
- * 
+ * @param  {boolean} [config.beLock]    当处于轮播的运动状态时，是否将当前轮播置为锁定状态（按钮点击将不会触发切换，但分页标签可以），默认值：false
+ *
  * @param  {string}  [config.imgAttr]   启用图片的懒加载时，用于表示真实url的自定义属性，默认值："data-slide-img"
  *
  * @param  {Function} callback          在每次执行切换操作之前所触发的回调函数——function(cur, old){}，cur参数表示当前需要显示的索引项，old参数表示前一个显示的索引项，action表示执行的相关动作（must , prev , next），this指向对象本身
@@ -287,6 +285,7 @@ Slider.prototype = {
         // 只有当切换页数大于1才做切换处理
         if(pages < 2 || amount <= cansee){
             that.valid = false;
+            that.init();
             return;
         }
 
@@ -316,7 +315,8 @@ Slider.prototype = {
             $posCur = $ele.find(cfg.posCur || ".j_slideCur"),
             $posPages = $ele.find(cfg.posPages || ".j_slidePages"),
             $btnPrev = $ele.find(cfg.btnPrev || ".j_slidePrev"),
-            $btnNext = $ele.find(cfg.btnNext || ".j_slideNext");
+            $btnNext = $ele.find(cfg.btnNext || ".j_slideNext"),
+            imgAttr;
 
         if(that.valid){
 
@@ -339,12 +339,22 @@ Slider.prototype = {
             }
 
             cfg.auto && that.bindAuto();
+            that.bindTouch();
             that.process = typeof process  === "function" ? process : $.noop;
             that.show(cfg.cur, "must");
+
+            $tags.add($posCur.parent()).add($btnPrev.parent()).show();
 
         }else{
 
             $tags.add($posCur.parent()).add($btnPrev.parent()).remove();
+
+            if(cfg.lazyload) {
+
+                imgAttr = cfg.imgAttr || "data-slide-img";
+
+                that.doLoadImg($('[' + imgAttr + ']'), imgAttr);
+            }
         }
     },
 
@@ -592,17 +602,54 @@ Slider.prototype = {
             $clone = that.hasClone ? that.parent.children(getCloneSelector(start, end)) : undefined,
             $operator = that.lists.slice(start, end).add($clone).find(selector);
 
-        $operator.each(function(index, ele){
-            var src = ele.getAttribute(attr);
-            ele.tagName.toLowerCase() === "img" ? ele.setAttribute("src", src) : ele.style.backgroundImage = "url(" + src + ")";
-            ele.removeAttribute(attr);
-        });
+        that.doLoadImg($operator, attr);
 
         if($.trim(that.imgLoaded).split(" ").length === that.pages){
             delete that.hasClone;
             delete that.imgLoaded;
             cfg.lazyload = false;
         }
+    },
+
+    // 执行图片加载
+    doLoadImg: function($operator, attr)
+    {
+        $operator.each(function(index, ele){
+            var src = ele.getAttribute(attr);
+            ele.tagName.toLowerCase() === "img" ? ele.setAttribute("src", src) : ele.style.backgroundImage = "url(" + src + ")";
+            ele.removeAttribute(attr);
+        });
+    },
+
+    //绑定触屏事件
+    bindTouch: function()
+    {
+        if(!("ontouchstart" in window)) return;
+
+        var that = this,
+            $ele = that.ele,
+            ele = $ele[0],
+            width = Math.floor($ele.width() / 4),
+            moveX = 0,
+            startX;
+
+        width = width > 80 ? 80 : width;
+
+        ele.addEventListener("touchstart", function(e){
+            startX = e.pageX;
+        });
+
+        ele.addEventListener("touchmove", function(e){
+            moveX = e.pageX - startX;
+            (Math.abs(moveX) > 20) && e.preventDefault();
+        });
+
+        ele.addEventListener("touchend", function(e){
+
+            if(Math.abs(moveX) > width){
+                moveX > 0 ? that.prev() : that.next();
+            }
+        });
     }
 };
 window.Slider = Slider;

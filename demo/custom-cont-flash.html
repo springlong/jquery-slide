@@ -19,7 +19,7 @@
 
         #slideCustom_outer{width:100%;height:362px;background:url(images/animation-1/header-background.jpg) repeat-x;}
         #slideCustom{position:relative;overflow:hidden;width:100%;height:362px;background:url(images/animation-1/header-background2.png) repeat-x 0 0;}
-        #slideCustom .content{position:relative;overflow:hidden;width:100%;margin:0 auto;}
+        #slideCustom .content{position:relative;overflow:hidden;width:100%;height: 362px; margin:0 auto;}
         #slideCustom .contentInner{height:362px;}
         #slideCustom .content .itemList{width:100%;height:362px;}
         #slideCustom .content .item{position:relative;width:980px;height:362px;margin:0 auto;}
@@ -170,7 +170,7 @@ oSlide.init(function(cur, old){
 <script>
     jQuery(function($){
 
-        var oSlide = new Slider("#slideCustom", { trigger: "click", auto: true });
+        var oSlide = new Slider("#slideCustom", { trigger: "click", auto: true});
         var done = function(){ oSlide.unlock() };
 
         oSlide.init(function(cur, old){
