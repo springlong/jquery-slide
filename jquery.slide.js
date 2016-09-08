@@ -6,6 +6,7 @@
 
 (function(window, $, undefined){
 
+
 /**
  * slide切换组件
  * @param  {Object}  config             配置参数（基本参数请参见 Slider.config，这里注释所列的参数说明为当前函数所扩展的参数 ）
