@@ -181,10 +181,11 @@ oSlide.init(function(cur, old, action){
 
 通过 `oSlide.lock()` 进行锁定后，按钮点击、分页标签都将无法响应切换操作，直到 `oSlide.unlock()` 被执行。 
 
+
 查看使用场景：
 
-1. [回调函数-标签项的滑动处理](http://www.fedlife.cn/demo/jquery/jquery-slide/callback-tag-slide.html)
-2. [效果定制-实现内容项的动画效果](http://www.fedlife.cn/demo/jquery/jquery-slide/custom-cont-flash.html)
+1. [回调函数-标签项的滑动处理](htmlpreview.github.io/?http://www.fedlife.cn/demo/jquery/jquery-slide/callback-tag-slide.html)
+2. [效果定制-实现内容项的动画效果](htmlpreview.github.io/?http://www.fedlife.cn/demo/jquery/jquery-slide/custom-cont-flash.html)
 
 
 ### 4. `oSlide.unlock()`
