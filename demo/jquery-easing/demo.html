@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery Easing 案例演示</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="../js/jquery.easing.min.js"></script>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        body{position:relative;width:980px;margin:0 auto;overflow:visible;}
+
+        #sportBox{width:100px;height:50px;margin:20px 0;background:orange;}
+
+        .wrapper{position:relative;float:left;display:inline;overflow:hidden;width:600px;height:300px;border:10px groove #eee;}
+        #slide2{margin-top:20px;}
+        #slide2 img{position:absolute;left:0;top:0;z-index:1;}
+
+        #option{position:absolute;right:0;top:70px;width:240px;height:458px;padding-bottom:10px;border:5px solid #054379;background:#fff;}
+        #option strong{display:block;width:100%;height:30px;line-height:30px;text-align:center;color:#CB950A;background:#5A5A5A;}
+        #option select{float:left;display:inline;width:100px;margin:10px 0 0 10px;text-indent:5px;}
+        #option .tweenType{float:left;display:none;width:100px;height:90px;border:1px dashed #7E7C7C;margin:10px 0 0 10px;overflow:hidden;}
+        #option .tweenType input{float:left;display:inline;width:20px;height:30px;line-height:30px;vertical-align:middle;cursor:pointer;}
+        #option .tweenType label{float:left;display:inline;width:80px;height:30px;line-height:30px;cursor:pointer;overflow:hidden;}
+        #option .tweenSpeed{float:left;display:inline;width:100px;margin:10px 0 0 10px;}
+        #option .tweenSpeed input{width:40px;height:20px;line-height:20px;text-align:center;background:#EFEFEF;}
+        #option .tips{clear:both;width:200px;padding:20px 0 0 20px;font-size:13px;color:#083434;}
+        #option .tips span{display:block;width:200px;margin-top:5px;line-height:20px;}
+        #res1{font-weight:bold;}
+        #show{display:block;width:120px;height:30px;margin:20px 0 0 20px;}
+        #show2{width:120px;height:30px;margin:5px 0 0 20px;}
+        #easing{display:block;margin:5px 0 0 20px;font:12px/30px "Courier New";color:green;}
+    </style>
+</head>
+<body>
+<div id="sportBox"></div>
+<div class="wrapper" id="slide1">
+    <img src="images/banner_1.jpg" alt="" />
+    <img src="images/banner_2.jpg" alt="" />
+    <img src="images/banner_3.jpg" alt="" />
+    <img src="images/banner_4.jpg" alt="" />
+    <img src="images/banner_5.jpg" alt="" />
+    <img src="images/banner_6.jpg" alt="" />
+</div>
+<div class="wrapper" id="slide2">
+    <img src="images/banner_6.jpg" alt="" />
+    <img src="images/banner_5.jpg" alt="" />
+    <img src="images/banner_4.jpg" alt="" />
+    <img src="images/banner_3.jpg" alt="" />
+    <img src="images/banner_2.jpg" alt="" />
+    <img src="images/banner_1.jpg" alt="" />
+</div>
+<div id="option">
+    <strong>缓动效果的选择</strong>
+    <select id="tweenEffect" size="11">
+        <option value="插件默认" selected>swing</option>
+        <option value="jQuery默认">jswing</option>
+        <option value="无缓动效果(恒速)">linear</option>
+        <option value="二次方的缓动(t^2)">Quad</option>
+        <option value="三次方的缓动(t^3)">Cubic</option>
+        <option value="四次方的缓动(t^4)">Quart</option>
+        <option value="五次方的缓动(t^5)">Quint</option>
+        <option value="正弧曲线的缓动(sin(t))">Sine</option>
+        <option value="指数曲线的缓动(2^t)">Expo</option>
+        <option value="圆形曲线的缓动(sqrt(1-t^2))">Circ</option>
+        <option value="指数衰减的正弧曲线缓动">Elastic</option>
+        <option value="超过范围的三次方缓动">Back</option>
+        <option value="指数衰减的反弹缓动">Bounce</option>
+    </select>
+    <p class="tweenType" id="tweenType">
+        <input type="radio" name="tweenType" id="easeIn" value="easeIn" title="从0开始加速的缓动" checked /><label for="easeIn">easeIn</label>
+        <input type="radio" name="tweenType" id="easeOut" value="easeOut" title="减速到0的缓动" /><label for="easeOut">easeOut</label>
+        <input type="radio" name="tweenType" id="easeInOut" value="easeInOut" title="前半段从0开始加速，后半段减速到0的缓动" /><label for="easeInOut">easeInOut</label>
+    </p>
+    <p class="tweenSpeed"><input type="text" id="tweenSpeed" value="400" />（ms）</p>
+    <p class="tips">
+        <span id="res1">jQuery默认</span>
+        <span id="res2">随着动画的开始变得更加快一些，然后再慢下来</span>
+    </p>
+    <div>
+        <button id="show">查看效果（滑动）</button>
+        <button id="show2">查看效果（淡出）</button>
+        <span id="easing">easing参数值：<span>swing</span></span>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery(function($)
+    {
+        //============================================
+        //事件绑定 + 容器获取
+        //============================================
+        var $boxEffect = $("#tweenEffect"),   //缓动效果的容器
+            $boxType = $("#tweenType"),       //缓动类型的容器
+            $boxSpeed = $("#tweenSpeed"),     //动画时长的容器
+            $typeRadios = $boxType.find("input[type=radio]"), //缓动类型的各个单选按钮
+            $checkedRadio = $typeRadios.filter(":checked"),   //被选中的当前缓动类型的单选按钮
+            $res1 = $("#res1"),                 //缓动效果的文本提示
+            $res2 = $("#res2"),                 //缓动类型的文本提示
+            $boxEasing = $("#easing span"),     //显示easing值的容器
+            valueEffect = $boxEffect.find(":selected")[0].text,   //缓动效果的最终值
+            valueType = "";                     //缓动类型的最终值
+            valueEasing = (valueType + valueEffect).replace(/^[a-z]{1}/i, function(match){
+                return match.toLowerCase();
+            }); //最后使用的easing参数值
+
+        //选择缓动效果
+        $boxEffect.on("change", function()
+        {
+            var current = this.selectedIndex;
+            var text = "";
+            valueEffect = this.options[current].text;
+            if(current < 3)
+            {
+                valueType = "";
+                text = current == 0 ? "二次方减速到0的缓动，同 easeOutQuad" : text;
+                text = current == 1 ? "随着动画的开始变得更加快一些，然后再慢下来" : text;
+                $boxType.hide();
+                $res2.html(text);
+            }
+            else
+            {
+                valueType = $checkedRadio.val();
+                $boxType.show();                            //显示“缓动类型”选项卡
+                $res2.html($checkedRadio.attr("title"));    //更新文本提示内容
+            }
+            $res1.html($boxEffect.val());       //更新文本提示内容
+
+            valueEasing = (valueType + valueEffect).replace(/^[a-z]{1}/i, function(match){
+                return match.toLowerCase();
+            });
+            $boxEasing.html(valueEasing);  //更新easing参数值的显示
+            doAnimation0();
+        }).trigger("change");
+
+        //选择缓动类型
+        $typeRadios.on("click", function()
+        {
+            valueType = this.value;
+            $res2.html(this.title);
+            $checkedRadio = $(this);
+
+            valueEasing = (valueType + valueEffect).replace(/^[a-z]{1}/i, function(match){
+                return match.toLowerCase();
+            });
+            $boxEasing.html(valueEasing);  //更新easing参数值的显示
+            doAnimation0();
+        });
+
+        //查看效果
+        $("#show").click(function()
+        {
+            doAnimation1();
+        });
+        $("#show2").click(function()
+        {
+            doAnimation2();
+        });
+
+        //缓动效果演示
+        function doAnimation0()
+        {
+            $("#sportBox").stop().width(100).animate({width: 980}, parseInt($boxSpeed.val()), valueEasing);
+        }
+
+        //============================================
+        //执行slide1容器中，图片从右至左的缓动切换效果
+        //============================================
+        var $slideWrapper1 = $("#slide1"),
+            $images1 = $slideWrapper1.children(),
+            imageWidth = $slideWrapper1.width();
+
+        $images1.css("float", "left").wrapAll("<div style='position:absolute;left:0;top:0;width:" + imageWidth * $images1.length + "px'></div>");
+
+        var $slideBox1 = $slideWrapper1.children().eq(0),
+            slideBox1_width = $slideBox1.width();
+
+        function doAnimation1()
+        {
+            $slideBox1.stop();
+
+            var leftProp = parseInt($slideBox1.css("left")),                    //动画容器当前的left属性值
+                leftDistance = imageWidth - Math.abs(leftProp % imageWidth),    //上轮动画运动了多少距离
+                moveDistance = leftProp - leftDistance;                         //本轮动画所需的运动值
+
+            Math.abs(moveDistance) == imageWidth * $images1.length && (moveDistance = slideBox1_width + moveDistance);  //调整本轮动画的运动值
+            $slideBox1.animate({left: moveDistance}, parseInt($boxSpeed.val()), valueEasing);
+        }
+
+
+
+        //============================================
+        //执行slide2容器中，图片淡入淡出切换效果
+        //============================================
+        var $slideWrapper2 = $("#slide2"),
+            $images2 = $slideWrapper2.children(),
+            imageWidth = $slideWrapper2.width(),
+            imageAmount = $images2.length,
+            current = 0,
+            next = 0,
+            $current = $images2.eq(current),
+            $next = $images2.eq(current + 1);
+
+        $images2.each(function(i)
+        {
+            $(this).css("z-index", imageAmount - i);
+        });
+
+        function doAnimation2()
+        {
+            if($current.add($.next).is(":animated")) return;
+
+            next = ++next < imageAmount ? next : 0,
+            $current = $images2.eq(current),
+            $next = $images2.eq(next);
+
+            $current.stop().fadeOut({duration: parseInt($boxSpeed.val()), easing: valueEasing, complete: function(){ current = next; }});
+            $next.stop().fadeIn({duration: parseInt($boxSpeed.val()), easing: valueEasing});
+        }
+    });
+</script>
+</body>
+</html>
