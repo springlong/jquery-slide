@@ -148,7 +148,7 @@ $('#slideTest').slide({ trigger: 'click', keepTags: true }, function(cur, old, a
 
 **缓动算法（easing）**
 
-jQuery 默认只提供了 `linear` 和 `swing` 两种缓动算法，为了获得更多的效果体验，建议大家配合使用 [jQuery Easing](https://github.com/gdsmith/jquery.easing) 插件来满足项目的多种需求。你可以点击 [这里](//htmlpreview.github.io/?https://github.com/springlong/jquery-slide/blob/master/demo/jquery-easing/demo.html) 查看应用缓动算法插件之后的效果预览。
+jQuery 默认只提供了 `linear` 和 `swing` 两种缓动算法，为了获得更多的效果体验，建议大家配合使用 [jQuery Easing](https://github.com/springlong/jquery-easing) 插件来满足项目的多种需求。你可以点击 [这里](//htmlpreview.github.io/?https://github.com/springlong/jquery-slide/blob/master/demo/jquery-easing/demo.html) 查看应用缓动算法插件之后的效果预览。
 
 **无缝结构（seamless）**
 
